@@ -10,9 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * APIController implements the CRUD actions for API model.
+ * ApiController implements the CRUD actions for API model.
  */
-class APIController extends Controller
+class ApiController extends Controller
 {
     /**
      * {@inheritdoc}

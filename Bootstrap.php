@@ -46,6 +46,17 @@ class Bootstrap implements BootstrapInterface
             true
         );
 
+        // Configure urlManager and Request component
+        if (!Yii::$app instanceof \yii\console\Application) {
+            $app->getUrlManager()->addRules(
+                [
+                    ['class' => 'yii\rest\UrlRule', 'controller' => 'user']
+                ],
+                true
+            );
+            $app->getRequest()->parsers[] = ['application/json' => 'yii\web\JsonParser'];
+        }
+
         // Configure options component
         $app->setComponents([
             'api' => [
