@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small>
     </h1>
 </div>
-<div class="options-index">
+<div class="api-index">
     <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -34,6 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <hr/>
+    <div>
+        <?= Html::a(Yii::t('app/modules/api', 'Testing API'), ['test'], ['class' => 'btn btn-info pull-left']) ?>
+    </div>
     <?php Pjax::end(); ?>
 </div>
 

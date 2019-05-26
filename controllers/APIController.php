@@ -44,6 +44,58 @@ class ApiController extends Controller
     }
 
     /**
+     * Testing API.
+     * @return mixed
+     */
+    public function actionTest()
+    {
+
+        $model = new \yii\base\DynamicModel(['action', 'request', 'method', 'accept']);
+
+        $apiActions = [
+            '/admin/api/users' => 'Users API'
+        ];
+
+        $requestMethods = [
+            'get' => 'GET',
+            'post' => 'POST',
+            'head' => 'HEAD',
+            'patch' => 'PATCH',
+            'put' => 'PUT',
+            'delete' => 'DELETE',
+            'options' => 'OPTIONS'
+        ];
+
+        $acceptResponses = [
+            'json' => 'application/json',
+            'xml' => 'application/xml'
+        ];
+
+        $model->addRule(['action'], 'in', ['range' => $apiActions]);
+
+        $model->addRule(['method'], 'in', ['range' => $requestMethods]);
+        $model->addRule(['method'], 'default', ['value' => 'get']);
+
+        $model->addRule(['accept'], 'in', ['range' => $acceptResponses]);
+        $model->addRule(['accept'], 'default', ['value' => 'json']);
+
+        $model->addRule(['request'], 'string', ['max' => 255]);
+
+        $model->addRule(['action', 'method', 'accept'], 'required');
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // do what you want
+        }
+
+        return $this->render('test', [
+            'model' => $model,
+            'apiActions' => $apiActions,
+            'requestMethods' => $requestMethods,
+            'acceptResponses' => $acceptResponses,
+        ]);
+    }
+
+    /**
      * Finds the model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
