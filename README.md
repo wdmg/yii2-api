@@ -10,7 +10,8 @@ API control module
 # Requirements 
 * PHP 5.6 or higher
 * Yii2 v.2.0.13 and newest
-* [Yii2 Users](https://github.com/wdmg/yii2-users) module (optionaly)
+* [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
+* [Yii2 Users](https://github.com/wdmg/yii2-users) module (required)
 
 # Installation
 To install the module, run the following command in the console:
