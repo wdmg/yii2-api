@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.1 (2019-05-28)
+ * Added check access by IP
+ 
 ## 1.0.0 (2019-05-27)
  * Added rate limit for API-requests
  * Added API-auth by access-token in custom IdentityInterface

@@ -6,9 +6,10 @@ use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
 use \yii\behaviors\TimeStampBehavior;
-use \yii\web\UnauthorizedHttpException;
 use \yii\filters\RateLimitInterface;
 use \yii\base\NotSupportedException;
+use \yii\web\ForbiddenHttpException;
+use \yii\web\UnauthorizedHttpException;
 
 /**
  * This is the model class for table "{{%api}}".
@@ -33,6 +34,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     const API_CLIENT_STATUS_DISABLED = 0; // Access disabled for client
     const API_CLIENT_STATUS_ACTIVE = 1; // Access enabled for client
 
+    public $module; // Base API module
     public $accessTokenExpire; // Access token expire time
     public $rateLimit; // Request`s limit per minute
 
@@ -50,9 +52,9 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     public function init()
     {
         parent::init();
-        $module = Yii::$app->getModule('api');
-        $this->accessTokenExpire = $module->accessTokenExpire;
-        $this->rateLimit = $module->rateLimit;
+        $this->module = Yii::$app->getModule('api');
+        $this->accessTokenExpire = $this->module->accessTokenExpire;
+        $this->rateLimit = $this->module->rateLimit;
     }
 
     /**
@@ -100,6 +102,14 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllowedIP()
+    {
+        return $this->user_ip();
     }
 
     /**
@@ -161,12 +171,25 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             return false;
         }
 
+        // Check access for current user IP
+        if (Yii::$app->request->userIP) {
+            if (!in_array(Yii::$app->request->userIP, explode(",", $client->user_ip), true)) {
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You do not have access to API from your IP.'), -3);
+                return false;
+            }
+            if (in_array(Yii::$app->request->userIP, $client->module->blockedIp, true)) {
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API from your IP has blocked.'), -4);
+                return false;
+            }
+        }
+
         // Get time to expire access token
         if (isset(Yii::$app->params['api.accessTokenExpire']))
             $expire = intval(Yii::$app->params['api.accessTokenExpire']);
         else
             $expire = $client->accessTokenExpire;
 
+        // Check access token is expired
         if ($expire !== 0) { // of `0` - unlimited lifetime
             if ((strtotime($client->updated_at) + (string)$expire) < time()) {
                 $client->access_token = $client->generateAccessToken();

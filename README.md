@@ -40,6 +40,7 @@ To add a module to the project, add the following data in your configuration fil
             'class' => 'wdmg\api\Module',
             'routePrefix' => 'admin',
             'accessTokenExpire', => 3600 // lifetime of `access_token`, `0` - unlimited
+            'blockedIp' => [], // blocked access from IP`s
             'rateLimit' => 30 // request`s to API per minute
         ],
         ...
@@ -66,5 +67,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.0.1 - Added check access by IP
 * v.1.0.0 - Added rate limit for API-requests, auth by access-token, separate controllers and models
 * v.0.0.3 - Added routing and base auth

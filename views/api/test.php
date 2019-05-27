@@ -26,20 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'options' => [
                 'class' => 'form-control'
             ]
-        ]); ?>
+        ])->label(Yii::t('app/modules/api', 'Action') . ":"); ?>
         <?= $form->field($model, 'method')->widget(SelectInput::className(), [
             'items' => $requestMethods,
             'options' => [
                 'class' => 'form-control'
             ]
-        ]); ?>
+        ])->label(Yii::t('app/modules/api', 'Method') . ":"); ?>
         <?= $form->field($model, 'accept')->widget(SelectInput::className(), [
             'items' => $acceptResponses,
             'options' => [
                 'class' => 'form-control'
             ]
-        ]); ?>
-        <?= $form->field($model, 'request')->textInput(['value' => '?access-token=', 'maxlength' => true]) ?>
+        ])->label(Yii::t('app/modules/api', 'Accept') . ":"); ?>
+        <?= $form->field($model, 'request')->textInput(['value' => '?access-token=', 'maxlength' => true])
+            ->label(Yii::t('app/modules/api', 'Request') . ":"); ?>
         <hr/>
         <div class="form-group">
             <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['api/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
@@ -51,7 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php ActiveForm::end(); ?>
     </div>
     <div class="col-xs-12 col-md-8">
-        <label>Response</label>
+        <label><?= Yii::t('app/modules/api', 'Response') . ":"; ?></label>
+        <span id="testApiStatus"></span>
         <pre id="testApiResponse" style="min-height:320px;"></pre>
     </div>
 </div>
@@ -98,11 +100,29 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $(\'#testApiResponse\').text(xmlText);
                             }
                         }
+                        /*if (data.status && data.response.message) {
+                            $(\'#testApiStatus\').html(data.response.status +\' \'+ data.response.message);
+                        }*/
                     }
-                    console.log(\'Request complete\');
+                    console.log(\'Request complete\', data);
+                    
+                    if (data.status && data.statusText) {
+                        var labelClass = \'default\';
+                        
+                        if (data.status == 429) {
+                            labelClass = \'warning\';
+                        } else if (data.status >= 399) {
+                            labelClass = \'danger\';
+                        } else if (data.status >= 299) {
+                            labelClass = \'info\';
+                        } else if (data.status >= 199) {
+                            labelClass = \'success\';
+                        }
+                        $(\'#testApiStatus\').html(\'<span class="label label-\' + labelClass + \'">\' + data.status + \'</span>\' + \'&nbsp;\' + \'<span class="text-\' + labelClass + \'">\' + data.statusText + \'</span>\');
+                    }
                 },
                 error: function(data) {
-                    console.log(\'Request error: \' + data);
+                    console.log(\'Request error\', data);
                 }
             });
             return false;
