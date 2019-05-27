@@ -64,5 +64,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.0.0.3 - Added routing and base auth
 * v.0.0.2 - Added first (test) API for Module::Users
 * v.0.0.1 - Added bootstrap, base module and base migrations

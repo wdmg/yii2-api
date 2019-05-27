@@ -8,6 +8,7 @@ use wdmg\api\models\APISearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ApiController implements the CRUD actions for API model.
@@ -53,10 +54,11 @@ class ApiController extends Controller
         $model = new \yii\base\DynamicModel(['action', 'request', 'method', 'accept']);
 
         $apiActions = [
-            '/admin/api/users' => 'Users API'
+            '/api/users' => 'Users API',
+            '/api/options' => 'Options API'
         ];
 
-        $requestMethods = [
+        $allowedMethods = [
             'get' => 'GET',
             'post' => 'POST',
             'head' => 'HEAD',
@@ -71,15 +73,15 @@ class ApiController extends Controller
             'xml' => 'application/xml'
         ];
 
-        $model->addRule(['action'], 'in', ['range' => $apiActions]);
+        $model->addRule(['action'], 'in', ['range' => array_keys($apiActions)]);
 
-        $model->addRule(['method'], 'in', ['range' => $requestMethods]);
-        $model->addRule(['method'], 'default', ['value' => 'get']);
+        $model->addRule(['method'], 'in', ['range' => array_keys($allowedMethods)]);
+        $model->addRule(['method'], 'default', ['value' => 'post']);
 
-        $model->addRule(['accept'], 'in', ['range' => $acceptResponses]);
+        $model->addRule(['accept'], 'in', ['range' => array_keys($acceptResponses)]);
         $model->addRule(['accept'], 'default', ['value' => 'json']);
 
-        $model->addRule(['request'], 'string', ['max' => 255]);
+        $model->addRule(['request'], 'string', ['min' => 3, 'max' => 255]);
 
         $model->addRule(['action', 'method', 'accept'], 'required');
 
@@ -90,7 +92,7 @@ class ApiController extends Controller
         return $this->render('test', [
             'model' => $model,
             'apiActions' => $apiActions,
-            'requestMethods' => $requestMethods,
+            'requestMethods' => $allowedMethods,
             'acceptResponses' => $acceptResponses,
         ]);
     }
