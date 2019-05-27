@@ -1,6 +1,6 @@
 <?php
 
-namespace wdmg\api\models;
+namespace wdmg\api\models\api;
 
 use Yii;
 use wdmg\users\models\Users;

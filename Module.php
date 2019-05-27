@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         0.0.3
+ * @version         1.0.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -37,6 +37,16 @@ class Module extends \yii\base\Module
     public $routePrefix = "admin";
 
     /**
+     * @var integer, lifetime of `acces_token` by default, `0` - unlimited
+     */
+    public $accessTokenExpire = 3600;
+
+    /**
+     * @var integer, request`s to API per minute by default
+     */
+    public $rateLimit = 30;
+
+    /**
      * @var string the vendor name of module
      */
     private $vendor = "wdmg";
@@ -44,7 +54,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "0.0.3";
+    private $version = "1.0.0";
 
     /**
      * @var integer, priority of initialization

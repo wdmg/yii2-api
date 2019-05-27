@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'form-control'
             ]
         ]); ?>
-        <?= $form->field($model, 'request')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'request')->textInput(['value' => '?access-token=', 'maxlength' => true]) ?>
         <hr/>
         <div class="form-group">
             <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['api/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
@@ -61,6 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
     if ($form.length > 0) {
 
         $form.find(\'#sendRequest\').on(\'click\', function() {
+        
+            $(\'#testApiResponse\').text(\'\');
         
             var requestMethod = \'get\';
             if ($form.find(\'#dynamicmodel-method\').val())

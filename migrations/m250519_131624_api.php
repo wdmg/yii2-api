@@ -26,6 +26,8 @@ class m250519_131624_api extends Migration
             'status' => $this->tinyInteger(1)->null()->defaultValue(0),
             'created_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->datetime()->defaultExpression('CURRENT_TIMESTAMP'),
+            'allowance' => $this->tinyInteger(3)->null()->defaultValue(0),
+            'allowance_at' => $this->datetime()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
         $this->createIndex('idx_api_user','{{%api}}', ['user_id', 'user_ip', 'access_token'],true);

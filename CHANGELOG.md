@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.0 (2019-05-27)
+ * Added rate limit for API-requests
+ * Added API-auth by access-token in custom IdentityInterface
+ * Added separate controllers and models for API
+ 
 ## 0.0.3 (2019-05-27)
  * Added routing and base auth
  

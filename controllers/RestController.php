@@ -6,13 +6,14 @@ use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\filters\ContentNegotiator;
+use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
 use Yii;
 use yii\web\Response;
 
-class UsersController extends ActiveController
+class RestController extends ActiveController
 {
-    public $modelClass = 'wdmg\api\models\UsersAPI';
+    public $modelClass;
 
     /**
      * {@inheritdoc}
@@ -46,29 +47,9 @@ class UsersController extends ActiveController
         $behaviors['authenticator'] = [
             'class' => QueryParamAuth::className(),
         ];
-
-        /*$behaviors['authenticator'] = [
-            'class' => QueryParamAuth::className(),
-            'only' => 'init',
-        ];*/
-
-        /*
-        $behaviors['contentNegotiator'] = [
-            'class' => ContentNegotiator::className(),
-            'formats' => [
-                'application/json' => Response::FORMAT_JSON,
-            ],
-        ];*/
+        $behaviors['rateLimiter']['enableRateLimitHeaders'] = true;
 
         return $behaviors;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function beforeAction($action)
-    {
-        parent::beforeAction($action);
     }
 
     /**

@@ -38,7 +38,9 @@ To add a module to the project, add the following data in your configuration fil
         ...
         'api' => [
             'class' => 'wdmg\api\Module',
-            'routePrefix' => 'admin'
+            'routePrefix' => 'admin',
+            'accessTokenExpire', => 3600 // lifetime of `access_token`, `0` - unlimited
+            'rateLimit' => 30 // request`s to API per minute
         ],
         ...
     ],
@@ -64,6 +66,5 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.0.0 - Added rate limit for API-requests, auth by access-token, separate controllers and models
 * v.0.0.3 - Added routing and base auth
-* v.0.0.2 - Added first (test) API for Module::Users
-* v.0.0.1 - Added bootstrap, base module and base migrations
