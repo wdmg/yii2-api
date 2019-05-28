@@ -2,6 +2,8 @@
 
 return [
     'API' => "API",
+    'API control module' => "Модуль управления API",
+
     'ID' => "ИД",
     'User ID' => "ИД пользователя",
     'User IP' => "IP пользователя",

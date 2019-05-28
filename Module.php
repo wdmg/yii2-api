@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.0.1
+ * @version         1.0.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -52,6 +52,16 @@ class Module extends \yii\base\Module
     public $blockedIp = [];
 
     /**
+     * @var string, the name of module
+     */
+    public $name = "API";
+
+    /**
+     * @var string, the description of module
+     */
+    public $description = "API control module for Yii2";
+
+    /**
      * @var string the vendor name of module
      */
     private $vendor = "wdmg";
@@ -59,7 +69,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.0.1";
+    private $version = "1.0.2";
 
     /**
      * @var integer, priority of initialization
@@ -129,6 +139,10 @@ class Module extends \yii\base\Module
 
             },
         ];
+
+        // Name and description translation of module
+        $this->name = Yii::t('app/modules/api', $this->name);
+        $this->description = Yii::t('app/modules/api', $this->description);
     }
 
     public static function t($category, $message, $params = [], $language = null)
@@ -157,7 +171,7 @@ class Module extends \yii\base\Module
     public function dashboardNavItems()
     {
         return [
-            'label' => Yii::t('app/modules/api', 'API'),
+            'label' => $this->name,
             'url' => [$this->routePrefix . '/api/'],
             'active' => in_array(\Yii::$app->controller->module->id, ['api'])
         ];

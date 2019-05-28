@@ -7,6 +7,7 @@ use wdmg\widgets\SelectInput;
 /* @var $searchModel wdmg\api\models\API */
 
 $this->title = Yii::t('app/modules/api', 'Test API');
+$this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['api/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

@@ -67,6 +67,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.0.2 - Added module name and description, translations. Routing fix.
 * v.1.0.1 - Added check access by IP
 * v.1.0.0 - Added rate limit for API-requests, auth by access-token, separate controllers and models
 * v.0.0.3 - Added routing and base auth

@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel wdmg\api\models\APISearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/modules/api', 'API');
+$this->title = $this->context->module->name;
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
