@@ -38,10 +38,16 @@ To add a module to the project, add the following data in your configuration fil
         ...
         'api' => [
             'class' => 'wdmg\api\Module',
-            'routePrefix' => 'admin',
+            'routePrefix' => 'admin', // routing prefix for dashboard
             'accessTokenExpire', => 3600 // lifetime of `access_token`, `0` - unlimited
-            'blockedIp' => [], // blocked access from IP`s
-            'rateLimit' => 30 // request`s to API per minute
+            'blockedIp' => [], // array, blocked access from IP`s
+            'rateLimit' => 30, // request`s to API per minute
+            'rateLimitHeaders' => false, // sent headers of rate limit
+            'authMethods' => [ // auth methods to allow
+                'basicAuth' => true,
+                'bearerAuth' => true,
+                'paramAuth' => true
+            ]
         ],
         ...
     ],
@@ -77,6 +83,12 @@ Request to API with bearer `access_token` (option authMethods['bearerAuth'] must
     -H 'Authorization: Bearer YOUR_API_ACCESS_TOKEN'
 
 # Routing
+
+Admin dashboard path by default: http://example.com/admin/api/
+
+Path for access to API endpoint: http://example.com/api/<code>model/module/action</code>
+Also see official guideline: https://github.com/yiisoft/yii2/blob/master/docs/guide/rest-quick-start.md
+
 Use the `Module::dashboardNavItems()` method of the module to generate a navigation items list for NavBar, like this:
 
     <?php
