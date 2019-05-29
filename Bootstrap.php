@@ -93,21 +93,22 @@ class Bootstrap implements BootstrapInterface
         );
 
         // Configure urlManager and Request component
-        if (!Yii::$app instanceof \yii\console\Application)
+        if (!Yii::$app instanceof \yii\console\Application) {
             $app->getRequest()->parsers[] = ['application/json' => 'yii\web\JsonParser'];
 
-        // Configure API-auth component
-        $request = new \yii\web\Request(['url' => parse_url(Yii::$app->request->getUrl(), PHP_URL_PATH)]);
-        if(preg_match('/^\/api\/?+/is', $request->url)) {
-            $module->controllerNamespace = 'wdmg\api\controllers\api';
-            $app->setComponents([
-                'user' => [
-                    'class' => '\yii\web\User',
-                    'identityClass' => 'wdmg\api\models\API',
-                    'enableAutoLogin' => false,
-                    'enableSession' => false,
-                ]
-            ]);
+            // Configure API-auth component
+            $request = new \yii\web\Request(['url' => parse_url(Yii::$app->request->getUrl(), PHP_URL_PATH)]);
+            if(preg_match('/^\/api\/?+/is', $request->url)) {
+                $module->controllerNamespace = 'wdmg\api\controllers\api';
+                $app->setComponents([
+                    'user' => [
+                        'class' => '\yii\web\User',
+                        'identityClass' => 'wdmg\api\models\API',
+                        'enableAutoLogin' => false,
+                        'enableSession' => false,
+                    ]
+                ]);
+            }
         }
     }
 }

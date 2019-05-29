@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 1.0.2 (2019-05-28)
+ * Bugfix for console operations other modules.
  * Added module name and description, translations. Routing fix.
  
 ## 1.0.1 (2019-05-28)
