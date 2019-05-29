@@ -196,11 +196,8 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         // Check access token is expired
         if ($expire !== 0) { // of `0` - unlimited lifetime
             if ((strtotime($client->updated_at) + (string)$expire) < time()) {
-                $old_access_token = $client->access_token;
                 $client->access_token = $client->generateAccessToken();
-                $new_access_token = $client->access_token;
                 $client->update();
-
                 throw new UnauthorizedHttpException('The access token expired and has been generated anew.', -1);
                 return false;
             }

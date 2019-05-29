@@ -56,16 +56,22 @@ class RestController extends ActiveController
             'authMethods' => []
         ];
 
-        if (Yii::$app->controller->module->authMethods['basicAuth'] == true)
+        // Get auth methods
+        if (isset(Yii::$app->params['api.authMethods']))
+            $authMethods = intval(Yii::$app->params['api.authMethods']);
+        else
+            $authMethods = Yii::$app->controller->module->authMethods;
+
+        if ($authMethods['basicAuth'] == true)
             $behaviors['authenticator']['authMethods'][] = [
                 'class' => HttpBasicAuth::className(),
                 'auth' => [$this, 'auth']
             ];
 
-        if (Yii::$app->controller->module->authMethods['bearerAuth'] == true)
+        if ($authMethods['bearerAuth'] == true)
             $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::className();
 
-        if (Yii::$app->controller->module->authMethods['paramAuth'] == true)
+        if ($authMethods['paramAuth'] == true)
             $behaviors['authenticator']['authMethods'][] = QueryParamAuth::className();
 
         $behaviors['contentNegotiator'] = [
@@ -76,10 +82,22 @@ class RestController extends ActiveController
             ],
         ];
 
-        if (Yii::$app->controller->module->rateLimitHeaders == true)
+        // Rate limit headers send?
+        if (isset(Yii::$app->params['api.rateLimitHeaders']))
+            $rateLimitHeaders = intval(Yii::$app->params['api.rateLimitHeaders']);
+        else
+            $rateLimitHeaders = Yii::$app->controller->module->rateLimitHeaders;
+
+        if ($rateLimitHeaders == true)
             $behaviors['rateLimiter']['enableRateLimitHeaders'] = true;
         else
             $behaviors['rateLimiter']['enableRateLimitHeaders'] = false;
+
+        // Get blocked IP`s
+        if (isset(Yii::$app->params['api.blockedIp']))
+            $blockedIp = intval(Yii::$app->params['api.blockedIp']);
+        else
+            $blockedIp = Yii::$app->controller->module->blockedIp;
 
         $behaviors['access'] = [
             'class' => AccessControl::className(),
@@ -87,10 +105,9 @@ class RestController extends ActiveController
                 [
                     'allow' => true,
                     'roles' => ['@'],
-                    'matchCallback' => function ($rule, $action) {
-                        $blockedIp = Yii::$app->controller->module->blockedIp;
+                    'matchCallback' => function ($rule, $action) use ($blockedIp) {
                         if (Yii::$app->request->userIP) {
-                            return (!in_array(Yii::$app->request->userIP, $blockedIp, true));
+                            return (!in_array(Yii::$app->request->userIP, $blockedIp));
                         }
                         return true;
                     }
