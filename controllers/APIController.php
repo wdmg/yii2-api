@@ -8,6 +8,7 @@ use wdmg\api\models\APISearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -25,6 +26,18 @@ class ApiController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'roles' => ['admin'],
+                        'allow' => true
+                    ], [
+                        'roles' => ['?'],
+                        'allow' => false
+                    ]
                 ],
             ],
         ];

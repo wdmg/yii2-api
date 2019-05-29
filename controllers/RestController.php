@@ -2,6 +2,7 @@
 
 namespace wdmg\api\controllers;
 
+use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
@@ -10,6 +11,8 @@ use yii\filters\AccessControl;
 use yii\filters\RateLimiter;
 use yii\rest\ActiveController;
 use Yii;
+use wdmg\api\models\API;
+use wdmg\users\models\Users;
 use yii\web\Response;
 use yii\web\UnauthorizedHttpException;
 use yii\web\ForbiddenHttpException;
@@ -49,8 +52,22 @@ class RestController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::className(),
+            'class' => CompositeAuth::className(),
+            'authMethods' => []
         ];
+
+        if (Yii::$app->controller->module->authMethods['basicAuth'] == true)
+            $behaviors['authenticator']['authMethods'][] = [
+                'class' => HttpBasicAuth::className(),
+                'auth' => [$this, 'auth']
+            ];
+
+        if (Yii::$app->controller->module->authMethods['bearerAuth'] == true)
+            $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::className();
+
+        if (Yii::$app->controller->module->authMethods['paramAuth'] == true)
+            $behaviors['authenticator']['authMethods'][] = QueryParamAuth::className();
+
         $behaviors['contentNegotiator'] = [
             'class' => ContentNegotiator::className(),
             'formats' => [
@@ -58,7 +75,12 @@ class RestController extends ActiveController
                 'application/xml' => Response::FORMAT_XML,
             ],
         ];
-        $behaviors['rateLimiter']['enableRateLimitHeaders'] = true;
+
+        if (Yii::$app->controller->module->rateLimitHeaders == true)
+            $behaviors['rateLimiter']['enableRateLimitHeaders'] = true;
+        else
+            $behaviors['rateLimiter']['enableRateLimitHeaders'] = false;
+
         $behaviors['access'] = [
             'class' => AccessControl::className(),
             'rules' => [
@@ -75,7 +97,7 @@ class RestController extends ActiveController
                 ]
             ],
             'denyCallback' => function ($rule, $action) {
-                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API from your IP has blocked.'), -4);
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
             }
         ];
         return $behaviors;
@@ -87,6 +109,19 @@ class RestController extends ActiveController
     public function checkAccess($action, $model = null, $params = [])
     {
         parent::checkAccess($action, $model, $params);
+    }
+
+    public function auth($username, $password)
+    {
+        $user = Users::findOne(['username' => $username]);
+        if ($user->validatePassword($password)) {
+            $client = Api::findIdentity($user->id);
+            if ($client) {
+                return $client;
+            }
+            return null;
+        }
+        return null;
     }
 }
 

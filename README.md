@@ -52,12 +52,36 @@ If you have connected the module not via a composer add Bootstrap section:
 $config['bootstrap'][] = 'wdmg\api\Bootstrap';
 `
 
+# Usecase
+
+Request to API with base auth by username and password (option authMethods['basicAuth'] must be set to `true`):
+
+    $ curl 'http://example.com/api/users' \
+    -XGET \
+    -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+    -H 'Authorization: Basic YOUR_USERNAME_AND_PASSWORD'
+    
+<b>Attention!</b> YOUR_USERNAME_AND_PASSWORD in format `username:password` and has been encoded, like `base64_encode('username:password')`
+
+Request to API with query param `access_token` (option authMethods['paramAuth'] must be set to `true`):
+
+    $ curl 'http://example.com/api/users?access-token=YOUR_API_ACCESS_TOKEN' \
+    -XGET \
+    -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+
+Request to API with bearer `access_token` (option authMethods['bearerAuth'] must be set to `true`):
+
+    $ curl 'http://example.com/api/users' \
+    -XGET \
+    -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+    -H 'Authorization: Bearer YOUR_API_ACCESS_TOKEN'
+
 # Routing
 Use the `Module::dashboardNavItems()` method of the module to generate a navigation items list for NavBar, like this:
 
     <?php
         echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'api' => ['class' => 'navbar-nav navbar-right'],
             'label' => 'Modules',
             'items' => [
                 Yii::$app->getModule('api')->dashboardNavItems(),
@@ -67,7 +91,5 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.1.0 - Added auth methods
 * v.1.0.2 - Added module name and description, translations. Routing fix.
-* v.1.0.1 - Added check access by IP
-* v.1.0.0 - Added rate limit for API-requests, auth by access-token, separate controllers and models
-* v.0.0.3 - Added routing and base auth

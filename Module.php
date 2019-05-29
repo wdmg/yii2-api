@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.0.2
+ * @version         1.1.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -47,6 +47,20 @@ class Module extends \yii\base\Module
     public $rateLimit = 30;
 
     /**
+     * @var boolean, sent rate limit with HTTP-headers
+     */
+    public $rateLimitHeaders = false;
+
+    /**
+     * @var array, allowed auth methods
+     */
+    public $authMethods = [
+        'basicAuth' => true,
+        'bearerAuth' => true,
+        'paramAuth' => true
+    ];
+
+    /**
      * @var array, blocked access from IP`s
      */
     public $blockedIp = [];
@@ -69,7 +83,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.0.2";
+    private $version = "1.1.0";
 
     /**
      * @var integer, priority of initialization

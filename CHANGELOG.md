@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.1.0 (2019-05-30)
+ * Added auth methods
+ 
 ## 1.0.2 (2019-05-28)
  * Bugfix for console operations other modules.
  * Added module name and description, translations. Routing fix.
