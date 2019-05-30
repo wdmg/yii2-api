@@ -25,7 +25,7 @@ class ApiController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'index' => ['get'],
+                    'index' => ['get', 'post'],
                 ],
             ],
             'access' => [
@@ -49,11 +49,110 @@ class ApiController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->request->isAjax) {
+            if (Yii::$app->request->get('change') == "status") {
+                if (Yii::$app->request->post('id', null)) {
+                    $id = Yii::$app->request->post('id');
+                    $status = Yii::$app->request->post('value', 0);
+                    $model = $this->findModel(intval($id));
+                    if ($model) {
+                        $model->status = intval($status);
+                        if ($model->update())
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            } else if (Yii::$app->request->get('change') == "access-token") {
+                if (Yii::$app->request->post('id', null)) {
+                    $id = Yii::$app->request->post('id');
+                    $model = $this->findModel(intval($id));
+                    if ($model) {
+                        $model->access_token = $model->generateAccessToken();
+                        if ($model->update())
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+        }
+
         $searchModel = new APISearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    /**
+     * Creates a new client.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new API();
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+            return $this->redirect(['index']);
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing client.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        if ($model && Yii::$app->request->isAjax) {
+            if (Yii::$app->request->get('change') == "access-token") {
+                $model->access_token = $model->generateAccessToken();
+                if ($model->update())
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+            return $this->redirect(['index']);
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing client.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Displays a single client.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+        return $this->renderAjax('view', [
+            'model' => $model
         ]);
     }
 

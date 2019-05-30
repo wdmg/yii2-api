@@ -73,7 +73,7 @@ class Module extends \yii\base\Module
     /**
      * @var string, the description of module
      */
-    public $description = "API control module for Yii2";
+    public $description = "API control module";
 
     /**
      * @var string the vendor name of module

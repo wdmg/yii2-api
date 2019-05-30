@@ -3,13 +3,14 @@
 namespace wdmg\api\models;
 
 use Yii;
-use \yii\db\ActiveRecord;
-use \yii\web\IdentityInterface;
-use \yii\behaviors\TimeStampBehavior;
-use \yii\filters\RateLimitInterface;
-use \yii\base\NotSupportedException;
-use \yii\web\ForbiddenHttpException;
-use \yii\web\UnauthorizedHttpException;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+use yii\behaviors\TimeStampBehavior;
+use yii\filters\RateLimitInterface;
+use yii\base\NotSupportedException;
+use yii\web\ForbiddenHttpException;
+use yii\web\UnauthorizedHttpException;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%api}}".
@@ -83,17 +84,28 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     {
         $rules = [
             [['user_id', 'status'], 'integer'],
-            [['user_id', 'user_ip', 'access_token', 'status'], 'required'],
+            [['user_id', 'user_ip', 'status'], 'required'],
             [['status'], 'default', 'value' => self::API_CLIENT_STATUS_ACTIVE],
             [['user_ip'], 'string', 'max' => 39],
             [['access_token'], 'string', 'max' => 32],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'allowance', 'allowance_at'], 'safe'],
         ];
 
         if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users'])) {
             $rules[] = [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::className(), 'targetAttribute' => ['user_id' => 'id']];
         }
         return $rules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert)
+            $this->access_token = self::generateAccessToken();
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -143,6 +155,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             'status' => Yii::t('app/modules/api', 'Status'),
             'created_at' => Yii::t('app/modules/api', 'Created At'),
             'updated_at' => Yii::t('app/modules/api', 'Updated At'),
+            'allowance_at' => Yii::t('app/modules/api', 'Last access'),
         ];
     }
 
@@ -196,13 +209,30 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         // Check access token is expired
         if ($expire !== 0) { // of `0` - unlimited lifetime
             if ((strtotime($client->updated_at) + (string)$expire) < time()) {
+                $old_access_token = $client->access_token;
                 $client->access_token = $client->generateAccessToken();
+                $new_access_token = $client->access_token;
                 $client->update();
+
                 throw new UnauthorizedHttpException('The access token expired and has been generated anew.', -1);
+                /*Yii::$app->response->content = json_encode([
+                    "access_token" => $old_access_token,
+                    "refresh_token" => $new_access_token,
+                    "expires" => $expire
+                ]);*/
                 return false;
             }
         }
         return $client;
+    }
+
+    public function getStatusModesList() {
+
+        $items = [];
+        return ArrayHelper::merge($items, [
+            self::API_CLIENT_STATUS_ACTIVE => Yii::t('app/modules/api', 'Access enabled'),
+            self::API_CLIENT_STATUS_DISABLED => Yii::t('app/modules/api', 'Access disabled'),
+        ]);
     }
 
     /**
@@ -236,6 +266,14 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             'allowance' => intval($allowance),
             'allowance_at' => date("Y-m-d H:i:s", $timestamp)
         ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsername()
+    {
+        return $this->user['username'];
     }
 
     /**

@@ -15,6 +15,8 @@ return [
     'Test API' => "Тест API",
     'Testing API' => "Тестировать API",
 
+    'Add new client' => "Добавить новый клиент",
+
     'Testing API' => "Тестировать API",
     '&larr; Back to list' => "&larr; Назад к списку",
     'Execute' => "Выполнить",
@@ -24,6 +26,21 @@ return [
     'Accept' => "Формат ответа",
     'Request' => "Запрос",
     'Response' => "Ответ",
+
+    'Last access' => "Последний доступ",
+
+    'Access enabled' => "Доступ открыт",
+    'Access disabled' => "Доступ закрыт",
+
+    'Update client: {name}' => 'Редактирование клиента: {name}',
+    'Copy to clipboard' => 'Скопировать в буфер обмена',
+    'User' => 'Пользователь',
+    'Actions' => 'Действия',
+    'Renew access-token' => 'Обновить токен доступа',
+    'Client details' => 'Подробности о клиенте',
+    'Close' => 'Закрыть',
+    'Create client' => 'Новый клиент',
+    'Save' => 'Сохранить',
 
     'This method not allowed for API.' => "Этот метод не разрешен для API.",
     'Access to API has blocked.' => "Доступ к API заблокирован.",
