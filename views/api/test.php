@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'form-control'
             ]
         ])->label(Yii::t('app/modules/api', 'Accept') . ":"); ?>
-        <?= $form->field($model, 'request')->textInput(['value' => '?access-token=', 'maxlength' => true])
+        <?= $form->field($model, 'request')->textarea(['value' => '?access-token='.$accessToken, 'rows' => 6])
             ->label(Yii::t('app/modules/api', 'Request') . ":"); ?>
         <hr/>
         <div class="form-group">

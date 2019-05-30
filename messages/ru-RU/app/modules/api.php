@@ -41,6 +41,7 @@ return [
     'Close' => 'Закрыть',
     'Create client' => 'Новый клиент',
     'Save' => 'Сохранить',
+    'Test API with this access-token' => 'Тестировать API с этим токеном',
 
     'Requested API not found.' => "Запрошенный API не найден.",
     'This method not allowed for API.' => "Этот метод не разрешен для API.",

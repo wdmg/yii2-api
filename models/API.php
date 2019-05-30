@@ -11,6 +11,7 @@ use yii\base\NotSupportedException;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 use yii\helpers\ArrayHelper;
+use yii\validators\IpValidator;
 
 /**
  * This is the model class for table "{{%api}}".
@@ -38,6 +39,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     public $module; // Base API module
     public $accessTokenExpire; // Access token expire time
     public $rateLimit; // Request`s limit per minute
+    public $sendAccessToken; // Send access token in headers
 
     /**
      * {@inheritdoc}
@@ -56,6 +58,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         $this->module = Yii::$app->getModule('api');
         $this->accessTokenExpire = $this->module->accessTokenExpire;
         $this->rateLimit = $this->module->rateLimit;
+        $this->sendAccessToken = $this->module->sendAccessToken;
     }
 
     /**
@@ -87,6 +90,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             [['user_id', 'user_ip', 'status'], 'required'],
             [['status'], 'default', 'value' => self::API_CLIENT_STATUS_ACTIVE],
             [['user_ip'], 'string', 'max' => 39],
+            [['user_ip'], 'checkIPList'],
             [['access_token'], 'string', 'max' => 32],
             [['created_at', 'updated_at', 'allowance', 'allowance_at'], 'safe'],
         ];
@@ -95,6 +99,18 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             $rules[] = [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::className(), 'targetAttribute' => ['user_id' => 'id']];
         }
         return $rules;
+    }
+
+    public function checkIPList($attribute, $params) {
+        $validator = new IpValidator;
+        $ips = is_array($this->user_ip) ? : explode(',', $this->user_ip);
+        foreach ($ips as $ip) {
+            $validator->validate($ip) ? : $this->addError($attribute, "The parameter `user_ip` is not a valid IP`s.");
+        }
+
+        if ($this->errors)
+            return $this->errors;
+
     }
 
     /**
@@ -209,17 +225,19 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         // Check access token is expired
         if ($expire !== 0) { // of `0` - unlimited lifetime
             if ((strtotime($client->updated_at) + (string)$expire) < time()) {
-                $old_access_token = $client->access_token;
                 $client->access_token = $client->generateAccessToken();
-                $new_access_token = $client->access_token;
                 $client->update();
 
+                // Send access token in headers
+                if (isset(Yii::$app->params['api.sendAccessToken']))
+                    $sendAccessToken = intval(Yii::$app->params['api.sendAccessToken']);
+                else
+                    $sendAccessToken = $client->sendAccessToken;
+
+                if($sendAccessToken)
+                    Yii::$app->response->headers->set('X-Access-Token', $client->access_token);
+
                 throw new UnauthorizedHttpException('The access token expired and has been generated anew.', -1);
-                /*Yii::$app->response->content = json_encode([
-                    "access_token" => $old_access_token,
-                    "refresh_token" => $new_access_token,
-                    "expires" => $expire
-                ]);*/
                 return false;
             }
         }

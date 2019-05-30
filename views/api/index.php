@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 use wdmg\api\MainAsset;
+use wdmg\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel wdmg\api\models\APISearch */
@@ -95,9 +96,60 @@ JS
                     }
                 }
             ],
-            /*'created_at',*/
-            'updated_at',
-            'allowance_at',
+            [
+                'attribute' => 'updated_at',
+                'format' => 'datetime',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'updated_at',
+                    'options' => [
+                        'class' => 'form-control'/*,
+                        'value' => date('Y-m-s H:i:s')*/
+                    ],
+                    'pluginOptions' => [
+                        'className' => '.datepicker',
+                        'input' => '.form-control',
+                        'format' => 'YYYY-MM-DD HH:mm:ss',
+                        'toggle' => '.input-group-btn > button',
+                    ]
+                ]),
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function($data) {
+                    return $data->updated_at;
+                },
+            ],
+            [
+                'attribute' => 'allowance_at',
+                'format' => 'datetime',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'allowance_at',
+                    'options' => [
+                        'class' => 'form-control'/*,
+                        'value' => date('Y-m-s H:i:s')*/
+                    ],
+                    'pluginOptions' => [
+                        'className' => '.datepicker',
+                        'input' => '.form-control',
+                        'format' => 'YYYY-MM-DD HH:mm:ss',
+                        'toggle' => '.input-group-btn > button',
+                    ]
+                ]),
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function($data) {
+                    return $data->allowance_at;
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => Yii::t('app/modules/api', 'Actions'),
@@ -124,8 +176,16 @@ JS
                             'data-pjax' => '0'
                         ]);
                     },
+                    'play' => function($url, $data, $key) {
+                        return Html::a('Test <span class="glyphicon glyphicon-play"></span>', Url::to(['api/test', 'access-token' => $data['access_token']]), [
+                            'title' => Yii::t('app/modules/api', 'Test API with this access-token'),
+                            'class' => 'text-success',
+                            'data-id' => $key,
+                            'data-pjax' => '0'
+                        ]);
+                    },
                 ],
-                'template' => '{view}&nbsp;{update}&nbsp;{delete}&nbsp;{refresh}'
+                'template' => '{view}&nbsp;{update}&nbsp;{delete}&nbsp;{refresh}&nbsp;{play}'
             ]
         ],
     ]); ?>

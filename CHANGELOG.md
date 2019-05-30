@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.1 (2019-05-31)
+ * Send access token with HTTP-headers
+ 
 ## 1.2.0 (2019-05-30)
  * Added API-modules
  * Added views and CRUD

@@ -42,7 +42,8 @@ To add a module to the project, add the following data in your configuration fil
             'accessTokenExpire', => 3600 // lifetime of `access_token`, `0` - unlimited
             'blockedIp' => [], // array, blocked access from IP`s
             'rateLimit' => 30, // request`s to API per minute
-            'rateLimitHeaders' => false, // sent headers of rate limit
+            'rateLimitHeaders' => false, // send HTTP-headers of rate limit
+            'sendAccessToken' => true, // send access token with HTTP-headers
             'authMethods' => [ // auth methods to allow
                 'basicAuth' => true,
                 'bearerAuth' => true,
@@ -60,7 +61,7 @@ $config['bootstrap'][] = 'wdmg\api\Bootstrap';
 
 # Usecase
 
-Request to API with base auth by username and password (option authMethods['basicAuth'] must be set to `true`):
+Request to API with base auth by username and password (option `authMethods['basicAuth']` must be set to `true`):
 
     $ curl 'http://example.com/api/users' \
     -XGET \
@@ -68,19 +69,23 @@ Request to API with base auth by username and password (option authMethods['basi
     -H 'Authorization: Basic YOUR_USERNAME_AND_PASSWORD'
     
 <b>Attention!</b> YOUR_USERNAME_AND_PASSWORD in format `username:password` and has been encoded, like `base64_encode('username:password')`
+After successful authorization, the server will return `X-Access-Token` for use in other requests (option `sendAccessToken` must be set to `true`).
 
-Request to API with query param `access_token` (option authMethods['paramAuth'] must be set to `true`):
+
+Request to API with query param `access_token` (option `authMethods['paramAuth']` must be set to `true`):
 
     $ curl 'http://example.com/api/users?access-token=YOUR_API_ACCESS_TOKEN' \
     -XGET \
-    -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+    -H 'Accept: application/json, text/javascript, */*; q=0.01'
 
-Request to API with bearer `access_token` (option authMethods['bearerAuth'] must be set to `true`):
+Request to API with bearer `access_token` (option `authMethods['bearerAuth']` must be set to `true`):
 
     $ curl 'http://example.com/api/users' \
     -XGET \
     -H 'Accept: application/json, text/javascript, */*; q=0.01' \
     -H 'Authorization: Bearer YOUR_API_ACCESS_TOKEN'
+
+If the access token has expired, the server will return new `X-Access-Token` for use in other requests (option `sendAccessToken` must be set to `true`).
 
 # Routing
 
@@ -103,5 +108,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.2.1 - Send access token with HTTP-headers
 * v.1.2.0 - Added API-modules, views and CRUD
 * v.1.1.0 - Added auth methods

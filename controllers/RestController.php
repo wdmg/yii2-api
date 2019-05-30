@@ -128,12 +128,25 @@ class RestController extends ActiveController
         parent::checkAccess($action, $model, $params);
     }
 
+    /**
+     * BaseAuth
+     */
     public function auth($username, $password)
     {
         $user = Users::findOne(['username' => $username]);
         if ($user->validatePassword($password)) {
             $client = Api::findIdentity($user->id);
             if ($client) {
+
+                // Send access token in header
+                if (isset(Yii::$app->params['api.sendAccessToken']))
+                    $sendAccessToken = intval(Yii::$app->params['api.sendAccessToken']);
+                else
+                    $sendAccessToken = Yii::$app->controller->module->sendAccessToken;
+
+                if($sendAccessToken)
+                    Yii::$app->response->headers->set('X-Access-Token', $client->access_token);
+
                 return $client;
             }
             return null;

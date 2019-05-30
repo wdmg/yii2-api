@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.2.0
+ * @version         1.2.1
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -61,6 +61,11 @@ class Module extends \yii\base\Module
     ];
 
     /**
+     * @var boolean, send access token with HTTP-headers
+     */
+    public $sendAccessToken = true;
+
+    /**
      * @var array, blocked access from IP`s
      */
     public $blockedIp = [];
@@ -83,7 +88,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.2.0";
+    private $version = "1.2.1";
 
     /**
      * @var integer, priority of initialization

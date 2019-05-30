@@ -95,6 +95,9 @@ class Bootstrap implements BootstrapInterface
         // Configure urlManager and Request component
         if (!Yii::$app instanceof \yii\console\Application) {
             $app->getRequest()->parsers[] = ['application/json' => 'yii\web\JsonParser'];
+            $app->getRequest()->enableCookieValidation = false;
+            $app->getRequest()->enableCsrfValidation = false;
+            Yii::$app->response->cookies->removeAll();
 
             // Configure API-auth component
             $request = new \yii\web\Request(['url' => parse_url(Yii::$app->request->getUrl(), PHP_URL_PATH)]);

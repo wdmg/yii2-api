@@ -163,6 +163,10 @@ class ApiController extends Controller
     public function actionTest()
     {
 
+        $accessToken = '';
+        if (Yii::$app->request->get('access-token'))
+            $accessToken = Yii::$app->request->get('access-token');
+
         $model = new \yii\base\DynamicModel(['action', 'request', 'method', 'accept']);
 
         $apiActions = [
@@ -211,6 +215,7 @@ class ApiController extends Controller
             'apiActions' => $apiActions,
             'requestMethods' => $allowedMethods,
             'acceptResponses' => $acceptResponses,
+            'accessToken' => $accessToken,
         ]);
     }
 
