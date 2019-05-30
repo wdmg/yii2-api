@@ -56,8 +56,8 @@ class Module extends \yii\base\Module
      */
     public $authMethods = [
         'basicAuth' => true,
-        'bearerAuth' => true,
-        'paramAuth' => true
+        'bearerAuth' => false,
+        'paramAuth' => false
     ];
 
     /**

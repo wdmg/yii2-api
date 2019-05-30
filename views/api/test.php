@@ -63,9 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
     'var $form = $("#testApiForm");
     if ($form.length > 0) {
 
+        var resend = false;
         $form.find(\'#sendRequest\').on(\'click\', function() {
         
-            var _this = $(this);
             $(\'#testApiResponse\').text(\'\');
         
             var requestMethod = \'get\';
@@ -123,11 +123,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         $(\'#testApiStatus\').html(\'<span class="label label-\' + labelClass + \'">\' + data.status + \'</span>\' + \'&nbsp;\' + \'<span class="text-\' + labelClass + \'">\' + data.statusText + \'</span>\');
                     }
                     
-                    if (data.getResponseHeader(\'X-Access-Token\')) {
+                    if (data.getResponseHeader(\'X-Access-Token\') && !resend) {
                         var accessToken = \'?access-token=\' + data.getResponseHeader(\'X-Access-Token\');
                         $form.find(\'#dynamicmodel-request\').val(accessToken);
                         console.log(\'Set new access token\', accessToken);
                         $form.find(\'#sendRequest\').click();
+                        resend = true;
                     }
                 },
                 error: function(data) {
