@@ -7,7 +7,7 @@ use yii\web\NotFoundHttpException;
 use wdmg\api\controllers\RestController;
 use Yii;
 
-class UsersController extends RestController
+class StatsController extends RestController
 {
     /**
      * {@inheritdoc}
@@ -15,8 +15,8 @@ class UsersController extends RestController
     public function init()
     {
         $this->modelClass = new Object();
-        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users']))
-            $this->modelClass = 'wdmg\api\models\api\UsersAPI';
+        if(class_exists('\wdmg\stats\models\Visitors') && isset(Yii::$app->modules['stats']))
+            $this->modelClass = 'wdmg\api\models\api\StatsAPI';
         else
             throw new NotFoundHttpException('Requested API not found.');
 

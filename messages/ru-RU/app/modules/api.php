@@ -42,6 +42,7 @@ return [
     'Create client' => 'Новый клиент',
     'Save' => 'Сохранить',
 
+    'Requested API not found.' => "Запрошенный API не найден.",
     'This method not allowed for API.' => "Этот метод не разрешен для API.",
     'Access to API has blocked.' => "Доступ к API заблокирован.",
     'Access to API from your IP has blocked.' => "Доступ к API с вашего IP заблокирован.",

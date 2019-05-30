@@ -103,5 +103,5 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.2.0 - Added API-modules, views and CRUD
 * v.1.1.0 - Added auth methods
-* v.1.0.2 - Added module name and description, translations. Routing fix.

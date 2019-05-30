@@ -2,13 +2,10 @@
 
 namespace wdmg\api\controllers\api;
 
-use yii\filters\auth\HttpBasicAuth;
-use yii\filters\auth\HttpBearerAuth;
-use yii\filters\auth\QueryParamAuth;
-use yii\filters\ContentNegotiator;
+use yii\base\Object;
+use yii\web\NotFoundHttpException;
 use wdmg\api\controllers\RestController;
 use Yii;
-use yii\web\Response;
 
 class OptionsController extends RestController
 {
@@ -17,7 +14,12 @@ class OptionsController extends RestController
      */
     public function init()
     {
-        $this->modelClass = 'wdmg\api\models\api\OptionsAPI';
+        $this->modelClass = new Object();
+        if(class_exists('\wdmg\options\models\Options') && isset(Yii::$app->modules['options']))
+            $this->modelClass = 'wdmg\api\models\api\OptionsAPI';
+        else
+            throw new NotFoundHttpException('Requested API not found.');
+
         parent::init();
     }
 }

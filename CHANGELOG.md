@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.2.0 (2019-05-30)
+ * Added API-modules
+ * Added views and CRUD
+ 
 ## 1.1.0 (2019-05-30)
  * Added auth methods
  
