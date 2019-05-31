@@ -98,7 +98,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
 
     <?php
         echo Nav::widget([
-        'api' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
             'label' => 'Modules',
             'items' => [
                 Yii::$app->getModule('api')->dashboardNavItems(),
