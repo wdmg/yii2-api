@@ -108,6 +108,5 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.2.2 - Update Yii2 version
 * v.1.2.1 - Send access token with HTTP-headers
-* v.1.2.0 - Added API-modules, views and CRUD
-* v.1.1.0 - Added auth methods

@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.2 (2019-05-31)
+ * Update Yii2 version
+ 
 ## 1.2.1 (2019-05-31)
  * Send access token with HTTP-headers
  
