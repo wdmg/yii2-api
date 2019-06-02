@@ -55,7 +55,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     public function init()
     {
         parent::init();
-        $this->module = Yii::$app->getModule('api');
+        $this->module = Yii::$app->getModule('admin/api');
         $this->accessTokenExpire = $this->module->accessTokenExpire;
         $this->rateLimit = $this->module->rateLimit;
         $this->sendAccessToken = $this->module->sendAccessToken;

@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.2.2
+ * @version         1.2.3
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -29,7 +29,7 @@ class Module extends \yii\base\Module
     /**
      * {@inheritdoc}
      */
-    public $defaultRoute = 'default';
+    public $defaultRoute = 'api/index';
 
     /**
      * @var string the prefix for routing of module
@@ -88,7 +88,7 @@ class Module extends \yii\base\Module
     /**
      * @var string the module version
      */
-    private $version = "1.2.2";
+    private $version = "1.2.3";
 
     /**
      * @var integer, priority of initialization
@@ -195,4 +195,5 @@ class Module extends \yii\base\Module
             'active' => in_array(\Yii::$app->controller->module->id, ['api'])
         ];
     }
+
 }

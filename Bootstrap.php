@@ -18,7 +18,7 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         // Get the module instance
-        $module = Yii::$app->getModule('api');
+        $module = $app->getModule('admin/api');
 
         // Get URL path prefix if exist
         if (isset($module->routePrefix)) {
