@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.4 (2019-06-04)
+ * Resolved bug in submodules names
+
 ## 1.2.3 (2019-06-01)
  * Bugfix, routing and refactoring
  

@@ -21,7 +21,7 @@ class m250519_131624_api extends Migration
         $this->createTable('{{%api}}', [
             'id'=> $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
-            'user_ip' => $this->string(39)->notNull(),
+            'user_ip' => $this->string(39)->null(),
             'access_token' => $this->string(32)->notNull(),
             'status' => $this->tinyInteger(1)->null()->defaultValue(0),
             'created_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),

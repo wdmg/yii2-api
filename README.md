@@ -53,12 +53,6 @@ To add a module to the project, add the following data in your configuration fil
         ...
     ],
 
-If you have connected the module not via a composer add Bootstrap section:
-
-`
-$config['bootstrap'][] = 'wdmg\api\Bootstrap';
-`
-
 # Usecase
 
 Request to API with base auth by username and password (option `authMethods['basicAuth']` must be set to `true`):
@@ -108,5 +102,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [in progress development]
+* v.1.2.4 - Resolved bug in submodules names
 * v.1.2.3 - Bugfix, routing and refactoring
 * v.1.2.2 - Update Yii2 version

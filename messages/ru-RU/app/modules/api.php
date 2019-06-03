@@ -21,6 +21,8 @@ return [
     '&larr; Back to list' => "&larr; Назад к списку",
     'Execute' => "Выполнить",
 
+    'from any IP' => "с любого IP",
+
     'Action' => "Экшен",
     'Method' => "Метод запроса",
     'Accept' => "Формат ответа",

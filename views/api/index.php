@@ -66,7 +66,23 @@ JS
                         return $model->user_id;
                 }
             ],
-            'user_ip',
+            [
+                'attribute' => 'user_ip',
+                'format' => 'raw',
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function($data) {
+
+                    if (!$data->user_ip)
+                        return '<em class="text-danger">('.Yii::t('app/modules/api', 'from any IP').')</em>';
+                    else
+                        return $data->user_ip;
+                }
+            ],
             [
                 'attribute' => 'access_token',
                 'format' => 'raw',

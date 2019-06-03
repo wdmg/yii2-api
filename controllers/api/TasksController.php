@@ -14,8 +14,12 @@ class TasksController extends RestController
      */
     public function init()
     {
+        $module_id = 'tasks';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
         $this->modelClass = new Object();
-        if(class_exists('\wdmg\tasks\models\Tasks') && isset(Yii::$app->modules['tasks']))
+        if(class_exists('\wdmg\tasks\models\Tasks') && Yii::$app->hasModule($module_id))
             $this->modelClass = 'wdmg\api\models\api\TasksAPI';
         else
             throw new NotFoundHttpException('Requested API not found.');

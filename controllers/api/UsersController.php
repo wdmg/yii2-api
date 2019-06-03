@@ -14,8 +14,12 @@ class UsersController extends RestController
      */
     public function init()
     {
+        $module_id = 'users';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
         $this->modelClass = new Object();
-        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users']))
+        if(class_exists('\wdmg\users\models\Users') && Yii::$app->hasModule($module_id))
             $this->modelClass = 'wdmg\api\models\api\UsersAPI';
         else
             throw new NotFoundHttpException('Requested API not found.');

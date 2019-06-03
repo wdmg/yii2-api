@@ -14,8 +14,12 @@ class StatsController extends RestController
      */
     public function init()
     {
+        $module_id = 'stats';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
         $this->modelClass = new Object();
-        if(class_exists('\wdmg\stats\models\Visitors') && isset(Yii::$app->modules['stats']))
+        if(class_exists('\wdmg\stats\models\Visitors') && Yii::$app->hasModule($module_id))
             $this->modelClass = 'wdmg\api\models\api\StatsAPI';
         else
             throw new NotFoundHttpException('Requested API not found.');

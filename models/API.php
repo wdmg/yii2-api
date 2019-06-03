@@ -87,7 +87,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     {
         $rules = [
             [['user_id', 'status'], 'integer'],
-            [['user_id', 'user_ip', 'status'], 'required'],
+            [['user_id', 'status'], 'required'],
             [['status'], 'default', 'value' => self::API_CLIENT_STATUS_ACTIVE],
             [['user_ip'], 'string', 'max' => 39],
             [['user_ip'], 'checkIPList'],
@@ -95,22 +95,27 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             [['created_at', 'updated_at', 'allowance', 'allowance_at'], 'safe'],
         ];
 
-        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users'])) {
+        $module_id = 'users';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
+        if(class_exists('\wdmg\users\models\Users') && Yii::$app->hasModule($module_id)) {
             $rules[] = [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::className(), 'targetAttribute' => ['user_id' => 'id']];
         }
         return $rules;
     }
 
     public function checkIPList($attribute, $params) {
-        $validator = new IpValidator;
-        $ips = is_array($this->user_ip) ? : explode(',', $this->user_ip);
-        foreach ($ips as $ip) {
-            $validator->validate($ip) ? : $this->addError($attribute, "The parameter `user_ip` is not a valid IP`s.");
+        if ($this->user_ip) {
+            $validator = new IpValidator;
+            $ips = is_array($this->user_ip) ? : explode(',', $this->user_ip);
+            foreach ($ips as $ip) {
+                $validator->validate($ip) ? : $this->addError($attribute, "The parameter `user_ip` is not a valid IP`s.");
+            }
+
+            if ($this->errors)
+                return $this->errors;
         }
-
-        if ($this->errors)
-            return $this->errors;
-
     }
 
     /**
@@ -205,7 +210,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         }
 
         // Check access for current user IP
-        if (Yii::$app->request->userIP) {
+        if (Yii::$app->request->userIP && $client->user_ip) {
             if (!in_array(Yii::$app->request->userIP, explode(",", $client->user_ip), true)) {
                 throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You do not have access to API from your IP.'), -3);
                 return false;
@@ -299,7 +304,11 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function getUser()
     {
-        if(class_exists('\wdmg\users\models\Users') && isset(Yii::$app->modules['users']))
+        $module_id = 'users';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
+        if(class_exists('\wdmg\users\models\Users') && Yii::$app->hasModule($module_id))
             return $this->hasOne(\wdmg\users\models\Users::className(), ['id' => 'user_id']);
         else
             return null;

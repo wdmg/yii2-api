@@ -14,8 +14,12 @@ class TicketsController extends RestController
      */
     public function init()
     {
+        $module_id = 'tickets';
+        if($this->module->module)
+            $module_id = $this->module->module->id . '/' . $module_id;
+
         $this->modelClass = new Object();
-        if(class_exists('\wdmg\tickets\models\Tickets') && isset(Yii::$app->modules['tickets']))
+        if(class_exists('\wdmg\tickets\models\Tickets') && Yii::$app->hasModule($module_id))
             $this->modelClass = 'wdmg\api\models\api\TicketsAPI';
         else
             throw new NotFoundHttpException('Requested API not found.');
