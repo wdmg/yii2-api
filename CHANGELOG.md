@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.2.5 (2019-06-04)
+## 1.2.6 (2019-06-04)
+ * Update dependencies
  * Module transferred to base module interface
  
 ## 1.2.4 (2019-06-04)
