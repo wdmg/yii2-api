@@ -1,5 +1,8 @@
 Changelog
 =========
+ 
+## 1.2.7 (2019-06-05)
+ * Update Yii2 version
 
 ## 1.2.6 (2019-06-04)
  * Update dependencies
