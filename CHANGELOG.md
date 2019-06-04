@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.5 (2019-06-04)
+ * Module transferred to base module interface
+ 
 ## 1.2.4 (2019-06-04)
  * Resolved bug in submodules names
 

@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.2.4
+ * @version         1.2.5
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -14,14 +14,13 @@ namespace wdmg\api;
  *
  */
 
-use yii\base\BootstrapInterface;
 use Yii;
-use yii\helpers\ArrayHelper;
+use wdmg\base\BaseModule;
 
 /**
  * api module definition class
  */
-class Module extends \yii\base\Module implements BootstrapInterface
+class Module extends BaseModule
 {
     /**
      * {@inheritdoc}
@@ -90,7 +89,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     /**
      * @var string the module version
      */
-    private $version = "1.2.4";
+    private $version = "1.2.5";
 
     /**
      * @var integer, priority of initialization
