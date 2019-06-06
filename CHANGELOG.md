@@ -1,5 +1,8 @@
 Changelog
 =========
+
+## 1.2.8 (2019-06-07)
+ * Module refactoring
  
 ## 1.2.7 (2019-06-05)
  * Update Yii2 version

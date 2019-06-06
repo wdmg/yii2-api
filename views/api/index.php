@@ -185,7 +185,7 @@ JS
                         ]);
                     },
                     'refresh' => function($url, $data, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-refresh"></span>', '#', [
+                        return Html::a('<span class="glyphicon glyphicon-refresh"></span>', false, [
                             'title' => Yii::t('app/modules/api', 'Renew access-token'),
                             'data-toggle' => 'renew-access-token',
                             'data-id' => $key,
@@ -235,7 +235,7 @@ JS
                 dataType: \'json\',
                 data: {\'id\': id},
                 complete: function(data) {
-                    $.pjax.reload({container:\'#apiClientsAjax\'});
+                    $.pjax.reload({type:\'POST\', container:\'#apiClientsAjax\'});
                 }
              });
         });
@@ -248,7 +248,7 @@ JS
                 dataType: \'json\',
                 data: {\'id\': id, \'value\': value},
                 complete: function(data) {
-                    $.pjax.reload({container:\'#apiClientsAjax\'});
+                    $.pjax.reload({type:\'POST\', container:\'#apiClientsAjax\'});
                 }
              });
         });

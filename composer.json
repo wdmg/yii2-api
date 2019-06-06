@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-api", "api", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "homepage": "https://github.com/wdmg/yii2-api",
   "support": {
     "source": "https://github.com/wdmg/yii2-api",
@@ -22,10 +22,10 @@
   ],
   "require": {
     "yiisoft/yii2": "^2.0.20",
-    "wdmg/yii2-base": "^1.0.0",
-    "wdmg/yii2-users": "^1.1.2",
-    "wdmg/yii2-selectinput": "^1.0.4",
-    "wdmg/yii2-datepicker": "^1.0.4",
+    "wdmg/yii2-base": "^1.0.1",
+    "wdmg/yii2-users": "^1.1.4",
+    "wdmg/yii2-selectinput": "^1.0.5",
+    "wdmg/yii2-datepicker": "^1.0.5",
     "bower-asset/clipboard": "^2.0.4"
   },
   "minimum-stability": "dev",
