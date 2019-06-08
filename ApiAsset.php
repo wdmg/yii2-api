@@ -3,7 +3,7 @@
 namespace wdmg\api;
 use yii\web\AssetBundle;
 
-class MainAsset extends AssetBundle
+class ApiAsset extends AssetBundle
 {
     public $sourcePath = '@bower/clipboard';
 
@@ -11,7 +11,6 @@ class MainAsset extends AssetBundle
     {
         parent::init();
         $this->js = YII_DEBUG ? ['dist/clipboard.js'] : ['dist/clipboard.min.js'];
-        $this->depends = [\yii\web\JqueryAsset::className()];
     }
 
 }

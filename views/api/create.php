@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use wdmg\api\MainAsset;
+use wdmg\api\ApiAsset;
 
 /* @var $this yii\web\View */
 /* @var $model wdmg\api\models\API */
@@ -9,7 +9,7 @@ use wdmg\api\MainAsset;
 $this->title = Yii::t('app/modules/api', 'Create client');
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['api/index']];
 $this->params['breadcrumbs'][] = $this->title;
-$bundle = MainAsset::register($this);
+$bundle = ApiAsset::register($this);
 
 $this->registerJs(<<< JS
 

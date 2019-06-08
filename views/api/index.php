@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
-use wdmg\api\MainAsset;
+use wdmg\api\ApiAsset;
 use wdmg\widgets\DatePicker;
 
 /* @var $this yii\web\View */
@@ -14,7 +14,7 @@ use wdmg\widgets\DatePicker;
 
 $this->title = $this->context->module->name;
 $this->params['breadcrumbs'][] = $this->title;
-$bundle = MainAsset::register($this);
+ApiAsset::register($this);
 
 $this->registerJs(<<< JS
 
