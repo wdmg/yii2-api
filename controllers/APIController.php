@@ -21,11 +21,12 @@ class ApiController extends Controller
      */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'index' => ['get', 'post'],
+                    'index' => ['GET', 'POST'],
+                    'delete' => ['POST'],
                 ],
             ],
             'access' => [
@@ -34,13 +35,25 @@ class ApiController extends Controller
                     [
                         'roles' => ['admin'],
                         'allow' => true
-                    ], [
-                        'roles' => ['?'],
-                        'allow' => false
-                    ]
+                    ],
                 ],
             ],
         ];
+
+        // If auth manager not configured use default access control
+        if(!Yii::$app->authManager) {
+            $behaviors['access'] = [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'roles' => ['@'],
+                        'allow' => true
+                    ],
+                ]
+            ];
+        }
+
+        return $behaviors;
     }
 
     /**
