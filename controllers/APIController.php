@@ -185,6 +185,7 @@ class ApiController extends Controller
         $apiActions = [
             '/api/users' => 'Users API',
             '/api/options' => 'Options API',
+            '/api/redirects' => 'Redirects API',
 
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',

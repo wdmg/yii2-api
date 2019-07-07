@@ -213,7 +213,6 @@ JS
     <?php Pjax::end(); ?>
 </div>
 
-
 <?php $this->registerJs(
 'var clipboard = new ClipboardJS(\'[data-clipboard-text]\');
     clipboard.on(\'success\', function(e) {

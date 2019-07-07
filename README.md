@@ -1,8 +1,8 @@
-[![Progress](https://img.shields.io/badge/required-Yii2_v2.0.13-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
+[![Yii2](https://img.shields.io/badge/required-Yii2_v2.0.20-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
 [![Github all releases](https://img.shields.io/github/downloads/wdmg/yii2-api/total.svg)](https://GitHub.com/wdmg/yii2-api/releases/)
-[![GitHub version](https://badge.fury.io/gh/wdmg/yii2-api.svg)](https://github.com/wdmg/yii2-api)
-![Progress](https://img.shields.io/badge/progress-in_development-red.svg)
+![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
 [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-api.svg)](https://github.com/wdmg/yii2-api/blob/master/LICENSE)
+![GitHub release](https://img.shields.io/github/release/wdmg/yii2-api/all.svg)
 
 # Yii2 API
 API control module
@@ -102,7 +102,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
         ]);
     ?>
 
-# Status and version [in progress development]
+# Status and version [ready to use]
+* v.1.2.10 - Added base API for Redirects module
 * v.1.2.9 - Added choice param for non interactive mode
 * v.1.2.8 - Module refactoring
-* v.1.2.7 - Update Yii2 version

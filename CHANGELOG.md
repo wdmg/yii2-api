@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.10 (2019-07-07)
+ * Added base API for Redirects module
+ 
 ## 1.2.9 (2019-06-09)
  * Added choice param for non interactive mode
  
