@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.2.10
+ * @version         1.2.11
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -79,7 +79,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.2.10";
+    private $version = "1.2.11";
 
     /**
      * @var integer, priority of initialization
@@ -99,6 +99,20 @@ class Module extends BaseModule
         // Set priority of current module
         $this->setPriority($this->priority);
 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dashboardNavItems($createLink = false)
+    {
+        $items = [
+            'label' => $this->name,
+            'url' => [$this->routePrefix . '/'. $this->id],
+            'icon' => 'fa-terminal',
+            'active' => in_array(\Yii::$app->controller->module->id, [$this->id])
+        ];
+        return $items;
     }
 
     /**

@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.11 (2019-07-16)
+ * Added extra options to composer.json and navbar menu icon
+
 ## 1.2.10 (2019-07-07)
  * Added base API for Redirects module
  

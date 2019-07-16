@@ -33,5 +33,20 @@
     "psr-4": {
       "wdmg\\api\\": ""
     }
+  },
+  "extra": {
+    "options": {
+      "routePrefix": "admin",
+      "accessTokenExpire": 3600,
+      "blockedIp": [],
+      "rateLimit": 30,
+      "rateLimitHeaders": false,
+      "sendAccessToken": true,
+      "authMethods": {
+        "basicAuth": true,
+        "bearerAuth": true,
+        "paramAuth": true
+      }
+    }
   }
 }
