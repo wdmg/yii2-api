@@ -4,7 +4,11 @@
   "keywords": ["yii2", "yii2-api", "api", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
+<<<<<<< HEAD
   "version": "1.2.12",
+=======
+  "version": "1.2.11",
+>>>>>>> 027c00c476cbd1e62516d70d458c4acff98e862b
   "homepage": "https://github.com/wdmg/yii2-api",
   "support": {
     "source": "https://github.com/wdmg/yii2-api",
