@@ -13,6 +13,7 @@ API control module
 * [Yii2 Base](https://github.com/wdmg/yii2-base) module (required)
 * [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
 * [Yii2 Users](https://github.com/wdmg/yii2-users) module (required)
+* [ClipboardJS](https://github.com/zenorocha/clipboard.js) asset library (required)
 
 # Installation
 To install the module, run the following command in the console:
@@ -103,6 +104,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.2.12 - Added base API for Pages module
 * v.1.2.11 - Added extra options to composer.json and navbar menu icon
 * v.1.2.10 - Added base API for Redirects module
-* v.1.2.9 - Added choice param for non interactive mode

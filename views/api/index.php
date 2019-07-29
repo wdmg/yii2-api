@@ -214,16 +214,7 @@ JS
 </div>
 
 <?php $this->registerJs(
-'var clipboard = new ClipboardJS(\'[data-clipboard-text]\');
-    clipboard.on(\'success\', function(e) {
-        var target = $(e.trigger);
-        var title_origin = target.attr(\'data-original-title\');
-        target.attr(\'data-original-title\', \'Copied!\').tooltip(\'show\');
-        target.attr(\'data-original-title\', title_origin).tooltip(\'fixTitle\');
-        e.clearSelection();
-    });
-    
-    var $container = $("#apiClientsAjax");
+'var $container = $("#apiClientsAjax");
     var requestURL = window.location.href;
     if ($container.length > 0) {
         $container.delegate(\'[data-toggle="renew-access-token"]\', \'click\', function() {
@@ -251,7 +242,16 @@ JS
                 }
              });
         });
-    }', \yii\web\View::POS_READY
+    }
+    
+    var clipboard = new ClipboardJS(\'[data-clipboard-text]\');
+    clipboard.on(\'success\', function(e) {
+        var target = $(e.trigger);
+        var title_origin = target.attr(\'data-original-title\');
+        target.attr(\'data-original-title\', \'Copied!\').tooltip(\'show\');
+        target.attr(\'data-original-title\', title_origin).tooltip(\'fixTitle\');
+        e.clearSelection();
+    });', \yii\web\View::POS_READY
 ); ?>
 <?php $this->registerJs(<<< JS
 $('body').delegate('.api-details-link', 'click', function(event) {

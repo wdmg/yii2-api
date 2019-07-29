@@ -187,6 +187,8 @@ class ApiController extends Controller
             '/api/options' => 'Options API',
             '/api/redirects' => 'Redirects API',
 
+            '/api/pages' => 'Pages API',
+
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',
 

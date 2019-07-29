@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.12 (2019-07-30)
+ * Added base API for Pages module
+ 
 ## 1.2.11 (2019-07-16)
  * Added extra options to composer.json and navbar menu icon
 
