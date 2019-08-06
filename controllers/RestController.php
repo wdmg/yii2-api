@@ -104,7 +104,7 @@ class RestController extends ActiveController
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['admin'],
+                    'roles' => ['@'],
                     'matchCallback' => function ($rule, $action) use ($blockedIp) {
                         if (Yii::$app->request->userIP) {
                             if (is_array($blockedIp)) {
