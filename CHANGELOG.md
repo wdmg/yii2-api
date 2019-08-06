@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.2.13 (2019-08-06)
+ * Added base API for News and mailer modules
+ 
 ## 1.2.12 (2019-07-30)
  * Added base API for Pages module
  

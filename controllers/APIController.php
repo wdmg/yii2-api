@@ -188,6 +188,8 @@ class ApiController extends Controller
             '/api/redirects' => 'Redirects API',
 
             '/api/pages' => 'Pages API',
+            '/api/news' => 'News API',
+            '/api/mailer' => 'Mailer API',
 
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',

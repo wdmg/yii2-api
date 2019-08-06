@@ -104,6 +104,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.2.13 - Added base API for News and mailer modules
 * v.1.2.12 - Added base API for Pages module
 * v.1.2.11 - Added extra options to composer.json and navbar menu icon
-* v.1.2.10 - Added base API for Redirects module
