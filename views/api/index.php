@@ -1,7 +1,60 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexv
- * Date: 09.10.2019
- * Time: 17:09
- */
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\bootstrap\Tabs;
+use wdmg\api\ApiAsset;
+
+use yii\widgets\Pjax;
+
+/* @var $this yii\web\View */
+/* @var $searchModel wdmg\api\models\APISearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = $this->context->module->name;
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['api/index']];
+$this->params['breadcrumbs'][] = Yii::t('app/modules/api', 'List of available API`s');
+ApiAsset::register($this);
+
+$this->registerJs(<<< JS
+
+    /* To initialize BS3 tooltips set this below */
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip(); 
+    });
+    
+    /* To initialize BS3 popovers set this below */
+    /*$(function () {
+        $("[data-toggle='popover']").popover(); 
+    });*/
+
+JS
+);
+
+?>
+<div class="page-header">
+    <h1>
+        <?= Html::encode(Yii::t('app/modules/api', 'List of available API`s')) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small>
+    </h1>
+</div>
+<div class="api-index">
+    <?php /*Pjax::begin([
+        'id' => "apiListAjax",
+        'timeout' => 5000
+    ]); ?>
+    <?php Pjax::end();*/ ?>
+    <?= Tabs::widget([
+        'items' => [
+            [
+                'label' => Yii::t('app/modules/api', 'Public API`s'),
+                'content' => $this->render('list/_public', ['model' => $public]),
+                'active' => true
+            ], [
+                'label' => Yii::t('app/modules/api', 'Private API`s'),
+                'content' => $this->render('list/_private', ['model' => $private]),
+            ]
+        ]
+    ]); ?>
+</div>
+
+<?php echo $this->render('../_debug'); ?>

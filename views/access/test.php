@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small>
     </h1>
 </div>
-<div class="api-test">
+<div class="api-access-test">
     <div class="col-xs-12 col-md-4">
         <?php $form = ActiveForm::begin([
             'id' => "testApiForm",
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ->label(Yii::t('app/modules/api', 'Request') . ":"); ?>
         <hr/>
         <div class="form-group">
-            <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['api/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
+            <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['access/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
             <?= Html::button(Yii::t('app/modules/api', 'Execute'), [
                 'id' => 'sendRequest',
                 'class' => 'btn btn-success pull-right'

@@ -12,7 +12,7 @@ use wdmg\widgets\SelectInput;
 $statusModes = $model->statusModesList;
 
 ?>
-<div class="api-form">
+<div class="api-access-form">
     <?php $form = ActiveForm::begin(); ?>
     <?php if ($model->id) {
         echo $form->field($model, 'user_id')->textInput(['readonly' => "readonly", 'disabbled' => "disabbled"]);
@@ -23,7 +23,7 @@ $statusModes = $model->statusModesList;
             'data-toggle' => 'tooltip',
             'data-pjax' => '0'
         ]);
-        echo '&nbsp;' . Html::a('<span class="glyphicon glyphicon-refresh"></span>', Url::to(['api/update', 'id' => $model->id, 'change' => 'access-token']), [
+        echo '&nbsp;' . Html::a('<span class="glyphicon glyphicon-refresh"></span>', Url::to(['access/update', 'id' => $model->id, 'change' => 'access-token']), [
             'title' => Yii::t('app/modules/api', 'Renew access-token'),
             'data-toggle' => 'renew-access-token',
             'data-pjax' => '0'
@@ -41,7 +41,7 @@ $statusModes = $model->statusModesList;
 
     <hr/>
     <div class="form-group">
-        <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['api/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
+        <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['access/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
         <?= Html::submitButton(Yii::t('app/modules/api', 'Save'), ['class' => 'btn btn-success pull-right']) ?>
     </div>
     <?php ActiveForm::end(); ?>

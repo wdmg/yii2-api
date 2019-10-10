@@ -11,8 +11,9 @@ API control module
 * PHP 5.6 or higher
 * Yii2 v.2.0.20 and newest
 * [Yii2 Base](https://github.com/wdmg/yii2-base) module (required)
-* [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
 * [Yii2 Users](https://github.com/wdmg/yii2-users) module (required)
+* [Yii2 Options](https://github.com/wdmg/yii2-options) module (support)
+* [Yii2 SelectInput](https://github.com/wdmg/yii2-selectinput) widget
 * [ClipboardJS](https://github.com/zenorocha/clipboard.js) asset library (required)
 
 # Installation
@@ -50,6 +51,26 @@ To add a module to the project, add the following data in your configuration fil
                 'basicAuth' => true,
                 'bearerAuth' => true,
                 'paramAuth' => true
+            ],
+            'authMethods' => [ // allowed API modes
+                'public' => true,
+                'private' => true
+            ],
+            'allowedApiModels' => [ // allowed API models
+                'public' => [
+                    "wdmg\api\models\api\NewsAPI" => true,
+                    "wdmg\api\models\api\OptionsAPI" => false,
+                    "wdmg\api\models\api\PagesAPI" => false,
+                    "wdmg\api\models\api\UsersAPI" => false,
+                    ...
+                ],
+                'private' => [
+                    "wdmg\api\models\api\NewsAPI" => true,
+                    "wdmg\api\models\api\OptionsAPI" => true,
+                    "wdmg\api\models\api\PagesAPI" => true,
+                    "wdmg\api\models\api\UsersAPI" => true,
+                    ...
+                ],
             ]
         ],
         ...
@@ -104,6 +125,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.0 - Separation of access to public and private API
 * v.1.2.13 - Added base API for News and mailer modules
 * v.1.2.12 - Added base API for Pages module
-* v.1.2.11 - Added extra options to composer.json and navbar menu icon

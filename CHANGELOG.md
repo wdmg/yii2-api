@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.0, (2019-10-10)
+ * Separation of access to public and private API
+ 
 ## 1.2.13 (2019-08-06)
  * Added base API for News and mailer modules
  

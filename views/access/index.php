@@ -13,7 +13,8 @@ use wdmg\widgets\DatePicker;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $this->context->module->name;
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['api/index']];
+$this->params['breadcrumbs'][] = Yii::t('app/modules/api', 'Private access to API`s');
 ApiAsset::register($this);
 
 $this->registerJs(<<< JS
@@ -34,10 +35,10 @@ JS
 ?>
 <div class="page-header">
     <h1>
-        <?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small>
+        <?= Html::encode(Yii::t('app/modules/api', 'Private access to API`s')) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small>
     </h1>
 </div>
-<div class="api-index">
+<div class="api-access-index">
     <?php Pjax::begin([
         'id' => "apiClientsAjax",
         'timeout' => 5000
@@ -193,7 +194,7 @@ JS
                         ]);
                     },
                     'play' => function($url, $data, $key) {
-                        return Html::a('Test <span class="glyphicon glyphicon-play"></span>', Url::to(['api/test', 'access-token' => $data['access_token']]), [
+                        return Html::a('Test <span class="glyphicon glyphicon-play"></span>', Url::to(['access/test', 'access-token' => $data['access_token']]), [
                             'title' => Yii::t('app/modules/api', 'Test API with this access-token'),
                             'class' => 'text-success',
                             'data-id' => $key,

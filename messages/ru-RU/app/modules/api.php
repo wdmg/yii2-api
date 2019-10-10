@@ -12,6 +12,9 @@ return [
     'Created At' => "Создано",
     'Updated At' => "Обновлено",
 
+    'Public API`s' => "Публичный API",
+    'Private API`s' => "Приватный API",
+
     'Test API' => "Тест API",
     'Testing API' => "Тестировать API",
 
@@ -29,6 +32,8 @@ return [
     'Request' => "Запрос",
     'Response' => "Ответ",
 
+    'List of available API`s' => "Список доступных API",
+    'Private access to API`s' => "Частный доступ к API",
     'Last access' => "Последний доступ",
 
     'Access enabled' => "Доступ открыт",
@@ -44,10 +49,18 @@ return [
     'Create client' => 'Новый клиент',
     'Save' => 'Сохранить',
     'Test API with this access-token' => 'Тестировать API с этим токеном',
+    'Requested invalid configuration of API.' => "Запрошена неверная конфигурация API.",
 
     'Requested API not found.' => "Запрошенный API не найден.",
     'This method not allowed for API.' => "Этот метод не разрешен для API.",
     'Access to API has blocked.' => "Доступ к API заблокирован.",
+
+    'Access to all public API has disabled.' => "Доступ ко всем публичным API закрыт.",
+    'Access to this public API has disabled.' => "Доступ к данному публичному API закрыт.",
+    'Access to all private API has disabled.' => "Доступ ко всем приватным API закрыт.",
+    'Access to this private API has disabled.' => "Доступ к данному приватному API закрыт.",
+    'Access to this API has not supported.' => "Доступ к данному API не поддерживается.",
+
     'Access to API from your IP has blocked.' => "Доступ к API с вашего IP заблокирован.",
     'You do not have access to API from your IP.' => "У вас нет доступа к API с вашего IP.",
     'The access token expired and has been generated anew.' => "Токен доступа истек и был сгенерирован заново.",

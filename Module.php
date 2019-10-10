@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.2.13
+ * @version         1.3.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -33,6 +33,16 @@ class Module extends BaseModule
     public $defaultRoute = 'api/index';
 
     /**
+     * @var string, the name of module
+     */
+    public $name = "API";
+
+    /**
+     * @var string, the description of module
+     */
+    public $description = "API control module";
+
+    /**
      * @var integer, lifetime of `acces_token` by default, `0` - unlimited
      */
     public $accessTokenExpire = 3600;
@@ -48,12 +58,48 @@ class Module extends BaseModule
     public $rateLimitHeaders = false;
 
     /**
-     * @var array, allowed auth methods
+     * @var array of the allowed auth methods
      */
     public $authMethods = [
         'basicAuth' => true,
         'bearerAuth' => true,
         'paramAuth' => true
+    ];
+
+    /**
+     * @var array of the allowed API modes
+     */
+    public $allowedApiModes = [
+        'public' => true,
+        'private' => true
+    ];
+
+    /**
+     * @var array of the allowed API models
+     */
+    public $allowedApiModels = [
+        'public' => [
+            "wdmg\api\models\api\MailerAPI" => false,
+            "wdmg\api\models\api\NewsAPI" => true,
+            "wdmg\api\models\api\OptionsAPI" => false,
+            "wdmg\api\models\api\PagesAPI" => true,
+            "wdmg\api\models\api\RedirectsAPI" => false,
+            "wdmg\api\models\api\StatsAPI" => false,
+            "wdmg\api\models\api\TasksAPI" => false,
+            "wdmg\api\models\api\TicketsAPI" => false,
+            "wdmg\api\models\api\UsersAPI" => true,
+        ],
+        'private' => [
+            "wdmg\api\models\api\MailerAPI" => true,
+            "wdmg\api\models\api\NewsAPI" => true,
+            "wdmg\api\models\api\OptionsAPI" => true,
+            "wdmg\api\models\api\PagesAPI" => true,
+            "wdmg\api\models\api\RedirectsAPI" => true,
+            "wdmg\api\models\api\StatsAPI" => true,
+            "wdmg\api\models\api\TasksAPI" => true,
+            "wdmg\api\models\api\TicketsAPI" => true,
+            "wdmg\api\models\api\UsersAPI" => true,
+        ],
     ];
 
     /**
@@ -67,19 +113,9 @@ class Module extends BaseModule
     public $blockedIp = [];
 
     /**
-     * @var string, the name of module
-     */
-    public $name = "API";
-
-    /**
-     * @var string, the description of module
-     */
-    public $description = "API control module";
-
-    /**
      * @var string the module version
      */
-    private $version = "1.2.13";
+    private $version = "1.3.0";
 
     /**
      * @var integer, priority of initialization
@@ -106,11 +142,31 @@ class Module extends BaseModule
      */
     public function dashboardNavItems($createLink = false)
     {
-        $items = [
+        /*$items = [
             'label' => $this->name,
             'url' => [$this->routePrefix . '/'. $this->id],
             'icon' => 'fa-plug',
             'active' => in_array(\Yii::$app->controller->module->id, [$this->id])
+        ];
+        return $items;*/
+
+        $items = [
+            'label' => $this->name,
+            'url' => '#',
+            'icon' => 'fa-plug',
+            'active' => in_array(\Yii::$app->controller->module->id, [$this->id]),
+            'items' => [
+                [
+                    'label' => Yii::t('app/modules/api', 'List of available API`s'),
+                    'url' => [$this->routePrefix . '/api/'],
+                    'active' => (in_array(\Yii::$app->controller->module->id, ['api']) &&  Yii::$app->controller->id == 'api'),
+                ],
+                [
+                    'label' => Yii::t('app/modules/api', 'Private access to API`s'),
+                    'url' => [$this->routePrefix . '/api/access/'],
+                    'active' => (in_array(\Yii::$app->controller->module->id, ['api']) &&  Yii::$app->controller->id == 'access'),
+                ],
+            ]
         ];
         return $items;
     }

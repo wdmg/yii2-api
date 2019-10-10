@@ -2,6 +2,8 @@
 
 namespace wdmg\api\controllers;
 
+use yii\base\InvalidConfigException;
+use yii\base\NotSupportedException;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -21,6 +23,9 @@ use yii\web\ForbiddenHttpException;
 class RestController extends ActiveController
 {
     public $modelClass;
+    private $requestMode = null;
+    private $allowedModes = [];
+    private $allowedModels = [];
 
     /**
      * {@inheritdoc}
@@ -29,6 +34,7 @@ class RestController extends ActiveController
     {
         parent::init();
         \Yii::$app->user->enableSession = false;
+
     }
 
     /**
@@ -56,23 +62,46 @@ class RestController extends ActiveController
             'authMethods' => []
         ];
 
+        // Get request modes
+        $this->requestMode = 'public';
+        if (!empty(Yii::$app->request->get('access-token', false)))
+            $this->requestMode = 'private';
+
+        // Get allowed modes
+        if (isset(Yii::$app->params['api.allowedApiModes']))
+            $this->allowedModes = Yii::$app->params['api.allowedApiModes'];
+        else
+            $this->allowedModes = Yii::$app->controller->module->allowedApiModes;
+
+        // Get allowed models
+        if (isset(Yii::$app->params['api.allowedApiModels']))
+            $this->allowedModels = Yii::$app->params['api.allowedApiModels'];
+        else
+            $this->allowedModels = Yii::$app->controller->module->allowedApiModels;
+
         // Get auth methods
         if (isset(Yii::$app->params['api.authMethods']))
-            $authMethods = intval(Yii::$app->params['api.authMethods']);
+            $authMethods = Yii::$app->params['api.authMethods'];
         else
             $authMethods = Yii::$app->controller->module->authMethods;
 
-        if ($authMethods['basicAuth'] == true)
-            $behaviors['authenticator']['authMethods'][] = [
-                'class' => HttpBasicAuth::className(),
-                'auth' => [$this, 'auth']
-            ];
+        if ($this->requestMode == 'private' && isset($authMethods['basicAuth'])) {
+            if ($authMethods['basicAuth'] == true)
+                $behaviors['authenticator']['authMethods'][] = [
+                    'class' => HttpBasicAuth::className(),
+                    'auth' => [$this, 'auth']
+                ];
+        }
 
-        if ($authMethods['bearerAuth'] == true)
-            $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::className();
+        if ($this->requestMode == 'private' && isset($authMethods['bearerAuth'])) {
+            if ($authMethods['bearerAuth'] == true)
+                $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::className();
+        }
 
-        if ($authMethods['paramAuth'] == true)
-            $behaviors['authenticator']['authMethods'][] = QueryParamAuth::className();
+        if ($this->requestMode == 'private' && isset($authMethods['paramAuth'])) {
+            if ($authMethods['paramAuth'] == true)
+                $behaviors['authenticator']['authMethods'][] = QueryParamAuth::className();
+        }
 
         $behaviors['contentNegotiator'] = [
             'class' => ContentNegotiator::className(),
@@ -95,32 +124,35 @@ class RestController extends ActiveController
 
         // Get blocked IP`s
         if (isset(Yii::$app->params['api.blockedIp']))
-            $blockedIp = intval(Yii::$app->params['api.blockedIp']);
+            $blockedIp = Yii::$app->params['api.blockedIp'];
         else
             $blockedIp = Yii::$app->controller->module->blockedIp;
 
-        $behaviors['access'] = [
-            'class' => AccessControl::className(),
-            'rules' => [
-                [
-                    'allow' => true,
-                    'roles' => ['@'],
-                    'matchCallback' => function ($rule, $action) use ($blockedIp) {
-                        if (Yii::$app->request->userIP) {
-                            if (is_array($blockedIp)) {
-                                return (!in_array(Yii::$app->request->userIP, $blockedIp));
-                            } else {
-                                return (!strpos(Yii::$app->request->userIP, $blockedIp));
+        /*if ($this->requestMode == 'private') {*/
+            $behaviors['access'] = [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ($this->requestMode == 'private') ? ['@'] : '',
+                        'matchCallback' => function ($rule, $action) use ($blockedIp) {
+                            if (Yii::$app->request->userIP) {
+                                if (is_array($blockedIp)) {
+                                    return (!in_array(Yii::$app->request->userIP, $blockedIp));
+                                } else {
+                                    return (!strpos(Yii::$app->request->userIP, $blockedIp));
+                                }
                             }
+                            return true;
                         }
-                        return true;
-                    }
-                ]
-            ],
-            'denyCallback' => function ($rule, $action) {
-                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
-            }
-        ];
+                    ]
+                ],
+                'denyCallback' => function ($rule, $action) {
+                    throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
+                }
+            ];
+        /*}*/
+
         return $behaviors;
     }
 
@@ -129,7 +161,38 @@ class RestController extends ActiveController
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        parent::checkAccess($action, $model, $params);
+        if(is_null($model))
+            $model = $this->modelClass;
+
+        parent::checkAccess($action, $this->modelClass, $params);
+
+        if ($this->requestMode == 'public' && isset($this->allowedModes['public'])) {
+            if ($this->allowedModes['public'] === false)
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to all public API has disabled.'), -2);
+        } else if ($this->requestMode == 'private' && isset($this->allowedModes['private'])) {
+            if ($this->allowedModes['private'] === false)
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to all private API has disabled.'), -2);
+        } else {
+            throw new InvalidConfigException(Yii::t('app/modules/api', 'Requested invalid configuration of API.'), 0);
+        }
+
+        if ($this->requestMode == 'public') {
+            if (isset($this->allowedModes['public']) && isset($this->allowedModels['public'][$model])) {
+                if ($this->allowedModes['public'] === true && $this->allowedModels['public'][$model] === false)
+                    throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to this public API has disabled.'), -3);
+            } else {
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to this API has not supported.'), -1);
+            }
+        } else if ($this->requestMode == 'private') {
+            if (isset($this->allowedModes['private']) && isset($this->allowedModels['private'][$model])) {
+                if ($this->allowedModes['private'] === true && $this->allowedModels['private'][$model] === false)
+                    throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to this private API has disabled.'), -3);
+            } else {
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to this API has not supported.'), -1);
+            }
+        } else {
+            throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ JS
 <div class="page-header">
     <h1><?= Html::encode($this->title) ?> <small class="text-muted pull-right">[v.<?= $this->context->module->version ?>]</small></h1>
 </div>
-<div class="api-update">
+<div class="api-access-update">
     <?php Pjax::begin([
         'id' => "apiFormClientAjax",
         'timeout' => 5000

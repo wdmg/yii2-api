@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-api", "api", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.2.13",
+  "version": "1.3.0",
   "homepage": "https://github.com/wdmg/yii2-api",
   "support": {
     "source": "https://github.com/wdmg/yii2-api",
@@ -24,6 +24,7 @@
     "yiisoft/yii2": "^2.0.20",
     "wdmg/yii2-base": "^1.0.1",
     "wdmg/yii2-users": "^1.1.4",
+    "wdmg/yii2-options": "^1.5.0",
     "wdmg/yii2-selectinput": "^1.0.5",
     "wdmg/yii2-datepicker": "^1.0.5",
     "bower-asset/clipboard": "*"
@@ -46,6 +47,34 @@
         "basicAuth": true,
         "bearerAuth": true,
         "paramAuth": true
+      },
+      "allowedApiModes": {
+        "public": false,
+        "private": true
+      },
+      "allowedApiModels": {
+        "public": {
+          "wdmg\\api\\models\\api\\MailerAPI": false,
+          "wdmg\\api\\models\\api\\NewsAPI": true,
+          "wdmg\\api\\models\\api\\OptionsAPI": false,
+          "wdmg\\api\\models\\api\\PagesAPI": true,
+          "wdmg\\api\\models\\api\\RedirectsAPI": false,
+          "wdmg\\api\\models\\api\\StatsAPI": false,
+          "wdmg\\api\\models\\api\\TasksAPI": false,
+          "wdmg\\api\\models\\api\\TicketsAPI": false,
+          "wdmg\\api\\models\\api\\UsersAPI": false
+        },
+        "private": {
+          "wdmg\\api\\models\\api\\MailerAPI": true,
+          "wdmg\\api\\models\\api\\NewsAPI": true,
+          "wdmg\\api\\models\\api\\OptionsAPI": true,
+          "wdmg\\api\\models\\api\\PagesAPI": true,
+          "wdmg\\api\\models\\api\\RedirectsAPI": true,
+          "wdmg\\api\\models\\api\\StatsAPI": true,
+          "wdmg\\api\\models\\api\\TasksAPI": true,
+          "wdmg\\api\\models\\api\\TicketsAPI": true,
+          "wdmg\\api\\models\\api\\UsersAPI": true
+        }
       }
     }
   }

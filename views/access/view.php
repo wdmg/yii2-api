@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 \yii\web\YiiAsset::register($this);
 
 ?>
-<div class="api-view">
+<div class="api-access-view">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
