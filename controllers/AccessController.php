@@ -12,9 +12,9 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 
 /**
- * ApiController implements the CRUD actions for API model.
+ * AccessController implements the CRUD actions for API model.
  */
-class ApiController extends Controller
+class AccessController extends Controller
 {
     /**
      * {@inheritdoc}

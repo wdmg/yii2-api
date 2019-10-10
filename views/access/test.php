@@ -87,6 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 type: requestMethod,
                 url: requestURL,
                 dataType: requestAccept,
+                cache: false,
                 complete: function(data) {
                     if(data) {
                         if (requestAccept == \'json\' && !(typeof data === "object")) {
