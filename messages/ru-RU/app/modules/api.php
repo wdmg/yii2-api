@@ -9,6 +9,7 @@ return [
     'User IP' => "IP пользователя",
     'Access token' => "Токен доступа",
     'Status' => "Статус",
+    'Class' => "Класс",
     'Created At' => "Создано",
     'Updated At' => "Обновлено",
 
@@ -31,6 +32,9 @@ return [
     'Accept' => "Формат ответа",
     'Request' => "Запрос",
     'Response' => "Ответ",
+
+    'Active' => "Активно",
+    'Disabled' => "Отключено",
 
     'List of available API`s' => "Список доступных API",
     'Private access to API`s' => "Частный доступ к API",

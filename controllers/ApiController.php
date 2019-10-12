@@ -63,6 +63,22 @@ class ApiController extends Controller
     public function actionIndex()
     {
 
+        $viewed = array();
+        $session = Yii::$app->session;
+
+        if(isset($session['viewed-flash']) && is_array($session['viewed-flash']))
+            $viewed = $session['viewed-flash'];
+
+        // Get allowed modes
+        if (isset(Yii::$app->params['api.allowedApiModes'])) {
+            if (is_array(Yii::$app->params['api.allowedApiModes']))
+                $allowedModes = Yii::$app->params['api.allowedApiModes'];
+            else
+                $allowedModes = unserialize(Yii::$app->params['api.allowedApiModes']);
+        } else {
+            $allowedModes = Yii::$app->controller->module->allowedApiModes;
+        }
+
         // Get allowed models
         if (isset(Yii::$app->params['api.allowedApiModels'])) {
             if (is_array(Yii::$app->params['api.allowedApiModels']))
@@ -95,7 +111,7 @@ class ApiController extends Controller
             $i++;
         }
 
-        if (Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax && $this->module->moduleLoaded('options', true)) {
             if (Yii::$app->request->get('change') == "status") {
                 if (Yii::$app->request->post('id', null)) {
                     $id = Yii::$app->request->post('id');
@@ -114,12 +130,44 @@ class ApiController extends Controller
                     foreach ($privateAllowedModels as $allowedModel) {
                         $allowedApiModels['private'][$allowedModel['class']] = boolval($allowedModel['status']);
                     }
-                    var_dump(Yii::$app->options->set('api.allowedApiModels', $allowedApiModels, 'array', null, true, false));
+
+                    if (!(Yii::$app->options->set('api.allowedApiModels', $allowedApiModels, 'array', null, true, false) === true)) {
+                        Yii::$app->getSession()->setFlash(
+                            'danger',
+                            Yii::t(
+                                'app/modules/options',
+                                'An error occurred while updating a properties.'
+                            )
+                        );
+                    }
                 }
             }
         }
 
-        $publicDataProvider = new ArrayDataProvider([
+
+        if($allowedModes['public'] == false && !in_array('public-api-disabled', $viewed) && is_array($viewed)) {
+            Yii::$app->getSession()->setFlash(
+                'warning',
+                Yii::t(
+                    'app/modules/api',
+                    'Access to all public API has disabled.'
+                )
+            );
+            $session['viewed-flash'] = array_merge(array_unique($viewed), ['public-api-disabled']);
+        }
+
+        if($allowedModes['private'] == false && !in_array('private-api-disabled', $viewed) && is_array($viewed)) {
+            Yii::$app->getSession()->setFlash(
+                'warning',
+                Yii::t(
+                    'app/modules/api',
+                    'Access to all private API has disabled.'
+                )
+            );
+            $session['viewed-flash'] = array_merge(array_unique($viewed), ['private-api-disabled']);
+        }
+
+        $dataProvider['public'] = new ArrayDataProvider([
             'allModels' => $publicAllowedModels,
             'sort' => [
                 'attributes' => ['id', 'class', 'status'],
@@ -128,7 +176,8 @@ class ApiController extends Controller
                 'pageSize' => 10,
             ],
         ]);
-        $privateDataProvider = new ArrayDataProvider([
+
+        $dataProvider['private'] = new ArrayDataProvider([
             'allModels' => $privateAllowedModels,
             'sort' => [
                 'attributes' => ['id', 'class', 'status'],
@@ -139,8 +188,8 @@ class ApiController extends Controller
         ]);
 
         return $this->render('index', [
-            'public' => $publicDataProvider,
-            'private' => $privateDataProvider,
+            'modes' => $allowedModes,
+            'dataProvider' => $dataProvider,
         ]);
     }
 }

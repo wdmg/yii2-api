@@ -47,11 +47,11 @@ JS
         'items' => [
             [
                 'label' => Yii::t('app/modules/api', 'Public API`s'),
-                'content' => $this->render('list/_public', ['model' => $public]),
+                'content' => $this->render('list/_public', ['mode' => $modes['public'], 'model' => $dataProvider['public']]),
                 'active' => true
             ], [
                 'label' => Yii::t('app/modules/api', 'Private API`s'),
-                'content' => $this->render('list/_private', ['model' => $private]),
+                'content' => $this->render('list/_private', ['mode' => $modes['private'], 'model' => $dataProvider['private']]),
             ]
         ]
     ]); ?>

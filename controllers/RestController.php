@@ -67,6 +67,8 @@ class RestController extends ActiveController
         if (!empty(Yii::$app->request->get('access-token', false)))
             $this->requestMode = 'private';
 
+        Yii::$app->response->headers->set('X-Access-Mode', $this->requestMode);
+
         // Get allowed modes
         if (isset(Yii::$app->params['api.allowedApiModes']))
             $this->allowedModes = Yii::$app->params['api.allowedApiModes'];
@@ -128,30 +130,28 @@ class RestController extends ActiveController
         else
             $blockedIp = Yii::$app->controller->module->blockedIp;
 
-        /*if ($this->requestMode == 'private') {*/
-            $behaviors['access'] = [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ($this->requestMode == 'private') ? ['@'] : '',
-                        'matchCallback' => function ($rule, $action) use ($blockedIp) {
-                            if (Yii::$app->request->userIP) {
-                                if (is_array($blockedIp)) {
-                                    return (!in_array(Yii::$app->request->userIP, $blockedIp));
-                                } else {
-                                    return (!strpos(Yii::$app->request->userIP, $blockedIp));
-                                }
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ($this->requestMode == 'private') ? ['@'] : '',
+                    'matchCallback' => function ($rule, $action) use ($blockedIp) {
+                        if (Yii::$app->request->userIP) {
+                            if (is_array($blockedIp)) {
+                                return (!in_array(Yii::$app->request->userIP, $blockedIp));
+                            } else {
+                                return (!strpos(Yii::$app->request->userIP, $blockedIp));
                             }
-                            return true;
                         }
-                    ]
-                ],
-                'denyCallback' => function ($rule, $action) {
-                    throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
-                }
-            ];
-        /*}*/
+                        return true;
+                    }
+                ]
+            ],
+            'denyCallback' => function ($rule, $action) {
+                throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.'), -2);
+            }
+        ];
 
         return $behaviors;
     }
