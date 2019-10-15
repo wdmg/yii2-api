@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 1.3.0, (2019-10-10)
+## 1.3.1 (2019-10-15)
+ * Fix context and translations
+ 
+## 1.3.0 (2019-10-10)
  * Separation of access to public and private API
  
 ## 1.2.13 (2019-08-06)

@@ -125,6 +125,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.1 - Fix context and translations
 * v.1.3.0 - Separation of access to public and private API
 * v.1.2.13 - Added base API for News and mailer modules
-* v.1.2.12 - Added base API for Pages module
