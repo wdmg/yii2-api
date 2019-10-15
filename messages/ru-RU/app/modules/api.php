@@ -36,8 +36,11 @@ return [
     'Active' => "Активно",
     'Disabled' => "Отключено",
 
+    'List of API`s' => "Список API",
     'List of available API`s' => "Список доступных API",
-    'Private access to API`s' => "Частный доступ к API",
+    'Access to API`s' => "Доступ к API",
+    'Private access to API`s' => "Доступ к приватным API",
+
     'Last access' => "Последний доступ",
 
     'Access enabled' => "Доступ открыт",

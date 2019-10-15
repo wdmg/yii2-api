@@ -142,14 +142,6 @@ class Module extends BaseModule
      */
     public function dashboardNavItems($createLink = false)
     {
-        /*$items = [
-            'label' => $this->name,
-            'url' => [$this->routePrefix . '/'. $this->id],
-            'icon' => 'fa-plug',
-            'active' => in_array(\Yii::$app->controller->module->id, [$this->id])
-        ];
-        return $items;*/
-
         $items = [
             'label' => $this->name,
             'url' => '#',
@@ -157,12 +149,12 @@ class Module extends BaseModule
             'active' => in_array(\Yii::$app->controller->module->id, [$this->id]),
             'items' => [
                 [
-                    'label' => Yii::t('app/modules/api', 'List of available API`s'),
+                    'label' => Yii::t('app/modules/api', 'List of API`s'),
                     'url' => [$this->routePrefix . '/api/'],
                     'active' => (in_array(\Yii::$app->controller->module->id, ['api']) &&  Yii::$app->controller->id == 'api'),
                 ],
                 [
-                    'label' => Yii::t('app/modules/api', 'Private access to API`s'),
+                    'label' => Yii::t('app/modules/api', 'Access to API`s'),
                     'url' => [$this->routePrefix . '/api/access/'],
                     'active' => (in_array(\Yii::$app->controller->module->id, ['api']) &&  Yii::$app->controller->id == 'access'),
                 ],

@@ -39,7 +39,7 @@ if ($mode == false)
                     'class' => 'text-center'
                 ],
                 'value' => function($data) use ($disabled) {
-                    if ($this->context->module->moduleLoaded('options', true)) {
+                    if ($this->context->module->moduleLoaded('options')) {
                         if ($data['status']) {
                             return '<div id="switcher-' . intval($data['id']) . '" data-value-current="' . intval($data['status']) . '" data-id="' . intval($data['id']) . '" data-toggle="button-switcher" class="btn-group btn-toggle"><button data-value="0" '.$disabled.' class="btn btn-xs btn-default">OFF</button><button data-value="1" '.$disabled.' class="btn btn-xs btn-primary">ON</button></div>';
                         } else {
