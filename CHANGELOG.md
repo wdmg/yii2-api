@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.2 (2019-12-03)
+ * Added base API for Newsletters and Subscribers modules
+ 
 ## 1.3.1 (2019-10-15)
  * Fix context and translations
  

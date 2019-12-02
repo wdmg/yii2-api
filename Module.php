@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.3.1
+ * @version         1.3.2
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -41,6 +41,16 @@ class Module extends BaseModule
      * @var string, the description of module
      */
     public $description = "API control module";
+
+    /**
+     * @var string the module version
+     */
+    private $version = "1.3.2";
+
+    /**
+     * @var integer, priority of initialization
+     */
+    private $priority = 10;
 
     /**
      * @var integer, lifetime of `acces_token` by default, `0` - unlimited
@@ -87,7 +97,10 @@ class Module extends BaseModule
             "wdmg\api\models\api\StatsAPI" => false,
             "wdmg\api\models\api\TasksAPI" => false,
             "wdmg\api\models\api\TicketsAPI" => false,
-            "wdmg\api\models\api\UsersAPI" => true,
+            "wdmg\api\models\api\UsersAPI" => false,
+            "wdmg\api\models\api\SubscribersAPI" => false,
+            "wdmg\api\models\api\SubscribersListAPI" => false,
+            "wdmg\api\models\api\NewslettersAPI" => false,
         ],
         'private' => [
             "wdmg\api\models\api\MailerAPI" => true,
@@ -99,6 +112,9 @@ class Module extends BaseModule
             "wdmg\api\models\api\TasksAPI" => true,
             "wdmg\api\models\api\TicketsAPI" => true,
             "wdmg\api\models\api\UsersAPI" => true,
+            "wdmg\api\models\api\SubscribersAPI" => true,
+            "wdmg\api\models\api\SubscribersListAPI" => true,
+            "wdmg\api\models\api\NewslettersAPI" => true,
         ],
     ];
 
@@ -111,16 +127,6 @@ class Module extends BaseModule
      * @var array, blocked access from IP`s
      */
     public $blockedIp = [];
-
-    /**
-     * @var string the module version
-     */
-    private $version = "1.3.1";
-
-    /**
-     * @var integer, priority of initialization
-     */
-    private $priority = 10;
 
     /**
      * {@inheritdoc}
@@ -197,40 +203,18 @@ class Module extends BaseModule
                         'controller' => [
                             'users',
                             'options',
-                        ],
-                        /*'except' => ['delete'],
-                        'tokens' => [
-                            '{id}' => '<id:\\w+>'
-                        ],
-                        'extraPatterns' => [
-                            'POST register' => 'register', //from url
-                            'GET exists'=>'exists',
-                            'POST login'=>'login',
-                            'POST follow'=>'follow',
-                            'POST category'=>'category',
-                            'PUT profile'=>'profile',
-                            'PUT change_password'=>'change_password',
-                            'PUT feed_interested'=>'feed_interested',
-                        ],*/
-                        /*'pluralize' => false,*/
-                        'extraPatterns' => [
-                            /*[
-                                'pattern' => '<module:api>/<controller:(users|options)>',
-                                'route' => '<module>/<controller>',
-                                'prefix' => '/api',
-                            ],*/
                         ]
                     ],
 
 
-                    '<module:api>/<controller:\w+>/' => 'admin/<module>/<controller>',
-                    '<module:api>/<controller:\w+>/<action:\w+>/' => 'admin/<module>/<controller>/<action>',
+                    '<module:api>/<controller:[\w-]+>/' => 'admin/<module>/<controller>',
+                    '<module:api>/<controller:[\w-]+>/<action:[\w-]+>/' => 'admin/<module>/<controller>/<action>',
                     [
-                        'pattern' => '<module:api>/<controller:\w+>/',
+                        'pattern' => '<module:api>/<controller:[\w-]+>/',
                         'route' => 'admin/<module>/<controller>',
                         'suffix' => '',
                     ],[
-                        'pattern' => '<module:api>/<controller:\w+>/<action:\w+>/',
+                        'pattern' => '<module:api>/<controller:[\w-]+>/<action:\w+>/',
                         'route' => 'admin/<module>/<controller>/<action>',
                         'suffix' => '',
                     ],
@@ -251,23 +235,23 @@ class Module extends BaseModule
         $app->getUrlManager()->addRules(
             [
                 $prefix . '<module:api>' => '<module>/api/index',
-                $prefix . '<module:api>/<controller:\w+>' => '<module>/<controller>',
-                $prefix . '<module:api>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>' => '<module>/<controller>/<action>',
-                $prefix . '<module:api>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:api>/<controller:[\w-]+>' => '<module>/<controller>',
+                $prefix . '<module:api>/<controller:[\w-]+>/<action:[0-9a-zA-Z_\-]+>' => '<module>/<controller>/<action>',
+                $prefix . '<module:api>/<controller:[\w-]+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>' => '<module>/<controller>/<action>',
                 [
                     'pattern' => $prefix . '<module:api>/',
                     'route' => '<module>/api/index',
                     'suffix' => ''
                 ], [
-                    'pattern' => $prefix . '<module:api>/<controller:\w+>/',
+                    'pattern' => $prefix . '<module:api>/<controller:[\w-]+>/',
                     'route' => '<module>/<controller>',
                     'suffix' => ''
                 ], [
-                    'pattern' => $prefix . '<module:api>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/',
+                    'pattern' => $prefix . '<module:api>/<controller:[\w-]+>/<action:[0-9a-zA-Z_\-]+>/',
                     'route' => '<module>/<controller>/<action>',
                     'suffix' => ''
                 ], [
-                    'pattern' => $prefix . '<module:api>/<controller:\w+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>/',
+                    'pattern' => $prefix . '<module:api>/<controller:[\w-]+>/<action:[0-9a-zA-Z_\-]+>/<id:\d+>/',
                     'route' => '<module>/<controller>/<action>',
                     'suffix' => ''
                 ]

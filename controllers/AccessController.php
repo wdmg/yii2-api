@@ -195,6 +195,11 @@ class AccessController extends Controller
             '/api/tickets' => 'Tickets API',
 
             '/api/stats' => 'Stats API',
+
+            '/api/newsletters' => 'Newsletters API',
+
+            '/api/subscribers' => 'Subscribers API',
+            '/api/subscribers-list' => 'Subscribers list API',
         ];
 
         $allowedMethods = [
