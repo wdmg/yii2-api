@@ -125,6 +125,6 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.3 - Fixed deprecated class declaration
 * v.1.3.2 - Added base API for Newsletters and Subscribers modules
 * v.1.3.1 - Fix context and translations
-* v.1.3.0 - Separation of access to public and private API

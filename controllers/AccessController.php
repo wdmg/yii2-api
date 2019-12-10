@@ -23,14 +23,14 @@ class AccessController extends Controller
     {
         $behaviors = [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['GET', 'POST'],
                     'delete' => ['POST'],
                 ],
             ],
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'roles' => ['admin'],
@@ -43,7 +43,7 @@ class AccessController extends Controller
         // If auth manager not configured use default access control
         if(!Yii::$app->authManager) {
             $behaviors['access'] = [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'roles' => ['@'],

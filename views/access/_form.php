@@ -32,7 +32,7 @@ $statusModes = $model->statusModesList;
         echo $form->field($model, 'user_id')->textInput();
     } ?>
     <?= $form->field($model, 'user_ip')->textarea(['rows' => 3]) ?>
-    <?= $form->field($model, 'status')->widget(SelectInput::className(), [
+    <?= $form->field($model, 'status')->widget(SelectInput::class, [
         'items' => $statusModes,
         'options' => [
             'class' => 'form-control'

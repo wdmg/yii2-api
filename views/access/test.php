@@ -22,19 +22,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => "testApiForm",
             'enableAjaxValidation' => true
         ]); ?>
-        <?= $form->field($model, 'action')->widget(SelectInput::className(), [
+        <?= $form->field($model, 'action')->widget(SelectInput::class, [
             'items' => $apiActions,
             'options' => [
                 'class' => 'form-control'
             ]
         ])->label(Yii::t('app/modules/api', 'Action') . ":"); ?>
-        <?= $form->field($model, 'method')->widget(SelectInput::className(), [
+        <?= $form->field($model, 'method')->widget(SelectInput::class, [
             'items' => $requestMethods,
             'options' => [
                 'class' => 'form-control'
             ]
         ])->label(Yii::t('app/modules/api', 'Method') . ":"); ?>
-        <?= $form->field($model, 'accept')->widget(SelectInput::className(), [
+        <?= $form->field($model, 'accept')->widget(SelectInput::class, [
             'items' => $acceptResponses,
             'options' => [
                 'class' => 'form-control'

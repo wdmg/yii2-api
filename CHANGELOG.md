@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.3 (2019-12-10)
+ * Fixed deprecated class declaration
+
 ## 1.3.2 (2019-12-03)
  * Added base API for Newsletters and Subscribers modules
  

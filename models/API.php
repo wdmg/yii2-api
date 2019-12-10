@@ -68,7 +68,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     {
         return [
             'timestamp' => [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'attributes' => [
                     self::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
                     self::EVENT_BEFORE_UPDATE => 'updated_at',
@@ -100,7 +100,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             $module_id = $this->module->module->id . '/' . $module_id;
 
         if(class_exists('\wdmg\users\models\Users') && Yii::$app->hasModule($module_id)) {
-            $rules[] = [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::className(), 'targetAttribute' => ['user_id' => 'id']];
+            $rules[] = [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \wdmg\users\models\Users::class, 'targetAttribute' => ['user_id' => 'id']];
         }
         return $rules;
     }
@@ -309,7 +309,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             $module_id = $this->module->module->id . '/' . $module_id;
 
         if(class_exists('\wdmg\users\models\Users') && Yii::$app->hasModule($module_id))
-            return $this->hasOne(\wdmg\users\models\Users::className(), ['id' => 'user_id']);
+            return $this->hasOne(\wdmg\users\models\Users::class, ['id' => 'user_id']);
         else
             return null;
     }

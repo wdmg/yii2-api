@@ -58,7 +58,7 @@ class RestController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
+            'class' => CompositeAuth::class,
             'authMethods' => []
         ];
 
@@ -90,23 +90,23 @@ class RestController extends ActiveController
         if ($this->requestMode == 'private' && isset($authMethods['basicAuth'])) {
             if ($authMethods['basicAuth'] == true)
                 $behaviors['authenticator']['authMethods'][] = [
-                    'class' => HttpBasicAuth::className(),
+                    'class' => HttpBasicAuth::class,
                     'auth' => [$this, 'auth']
                 ];
         }
 
         if ($this->requestMode == 'private' && isset($authMethods['bearerAuth'])) {
             if ($authMethods['bearerAuth'] == true)
-                $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::className();
+                $behaviors['authenticator']['authMethods'][] = HttpBearerAuth::class;
         }
 
         if ($this->requestMode == 'private' && isset($authMethods['paramAuth'])) {
             if ($authMethods['paramAuth'] == true)
-                $behaviors['authenticator']['authMethods'][] = QueryParamAuth::className();
+                $behaviors['authenticator']['authMethods'][] = QueryParamAuth::class;
         }
 
         $behaviors['contentNegotiator'] = [
-            'class' => ContentNegotiator::className(),
+            'class' => ContentNegotiator::class,
             'formats' => [
                 'application/json' => Response::FORMAT_JSON,
                 'application/xml' => Response::FORMAT_XML,
@@ -131,7 +131,7 @@ class RestController extends ActiveController
             $blockedIp = Yii::$app->controller->module->blockedIp;
 
         $behaviors['access'] = [
-            'class' => AccessControl::className(),
+            'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow' => true,
