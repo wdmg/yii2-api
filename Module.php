@@ -121,7 +121,7 @@ class Module extends BaseModule
     /**
      * @var boolean, send access token with HTTP-headers
      */
-    public $sendAccessToken = true;
+    public $sendAccessToken = false;
 
     /**
      * @var array, blocked access from IP`s
