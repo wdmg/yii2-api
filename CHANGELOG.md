@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.4 (2020-02-25)
+ * Added base API for Search module
+ 
 ## 1.3.3 (2019-12-10)
  * Fixed deprecated class declaration
 

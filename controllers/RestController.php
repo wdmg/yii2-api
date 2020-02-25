@@ -35,6 +35,11 @@ class RestController extends ActiveController
         parent::init();
         \Yii::$app->user->enableSession = false;
 
+        // Get request modes
+        $this->requestMode = 'public';
+        if (!empty(Yii::$app->request->get('access-token', false)))
+            $this->requestMode = 'private';
+
     }
 
     /**
@@ -42,13 +47,21 @@ class RestController extends ActiveController
      */
     protected function verbs()
     {
-        return [
+        $verbs = [
             'index' => ['GET', 'HEAD'],
             'view' => ['GET', 'HEAD'],
             'create' => ['POST'],
             'update' => ['PUT', 'PATCH'],
             'delete' => ['DELETE'],
         ];
+
+        if (!$this->requestMode == 'private') {
+            unset($verbs['update']);
+            unset($verbs['create']);
+            unset($verbs['delete']);
+        }
+
+        return $verbs;
     }
 
     /**
@@ -61,11 +74,6 @@ class RestController extends ActiveController
             'class' => CompositeAuth::class,
             'authMethods' => []
         ];
-
-        // Get request modes
-        $this->requestMode = 'public';
-        if (!empty(Yii::$app->request->get('access-token', false)))
-            $this->requestMode = 'private';
 
         Yii::$app->response->headers->set('X-Access-Mode', $this->requestMode);
 

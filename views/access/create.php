@@ -7,7 +7,7 @@ use wdmg\api\ApiAsset;
 /* @var $model wdmg\api\models\API */
 
 $this->title = Yii::t('app/modules/api', 'Create client');
-$this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['api/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/modules/api', 'Private access to API`s'), 'url' => ['access/index']];
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = ApiAsset::register($this);
 

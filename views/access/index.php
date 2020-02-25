@@ -176,7 +176,7 @@ JS
                 ],
                 'buttons'=> [
                     'view' => function($url, $data, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['api/view', 'id' => $data['id']]), [
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', Url::to(['access/view', 'id' => $data['id']]), [
                             'class' => 'api-details-link',
                             'title' => Yii::t('yii', 'View'),
                             'data-toggle' => 'modal',

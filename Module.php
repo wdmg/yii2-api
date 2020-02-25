@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.3.3
+ * @version         1.3.4
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 W.D.M.Group, Ukraine
@@ -45,7 +45,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.3.3";
+    private $version = "1.3.4";
 
     /**
      * @var integer, priority of initialization
@@ -93,6 +93,8 @@ class Module extends BaseModule
             "wdmg\api\models\api\NewsAPI" => true,
             "wdmg\api\models\api\OptionsAPI" => false,
             "wdmg\api\models\api\PagesAPI" => true,
+            "wdmg\api\models\api\SearchAPI" => true,
+            "wdmg\api\models\api\LiveSearchAPI" => false,
             "wdmg\api\models\api\RedirectsAPI" => false,
             "wdmg\api\models\api\StatsAPI" => false,
             "wdmg\api\models\api\TasksAPI" => false,
@@ -107,6 +109,8 @@ class Module extends BaseModule
             "wdmg\api\models\api\NewsAPI" => true,
             "wdmg\api\models\api\OptionsAPI" => true,
             "wdmg\api\models\api\PagesAPI" => true,
+            "wdmg\api\models\api\SearchAPI" => true,
+            "wdmg\api\models\api\LiveSearchAPI" => true,
             "wdmg\api\models\api\RedirectsAPI" => true,
             "wdmg\api\models\api\StatsAPI" => true,
             "wdmg\api\models\api\TasksAPI" => true,

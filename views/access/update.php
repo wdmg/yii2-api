@@ -10,7 +10,7 @@ use wdmg\api\ApiAsset;
 $this->title = Yii::t('app/modules/api', 'Update client: {name}', [
     'name' => $model->username,
 ]);
-$this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['api/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/modules/api', 'Private access to API`s'), 'url' => ['access/index']];
 $this->params['breadcrumbs'][] = $this->title;
 $bundle = ApiAsset::register($this);
 
