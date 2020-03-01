@@ -155,7 +155,7 @@ class Module extends BaseModule
         $items = [
             'label' => $this->name,
             'url' => '#',
-            'icon' => 'fa-plug',
+            'icon' => 'fa fa-fw fa-plug',
             'active' => in_array(\Yii::$app->controller->module->id, [$this->id]),
             'items' => [
                 [
