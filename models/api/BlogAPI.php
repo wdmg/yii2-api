@@ -3,9 +3,9 @@
 namespace wdmg\api\models\api;
 
 use Yii;
-use wdmg\news\models\News;
+use wdmg\blog\models\Posts;
 
-class NewsAPI extends News
+class BlogAPI extends Posts
 {
     private $allowedFields = [
         'id',
@@ -14,6 +14,8 @@ class NewsAPI extends News
         'image',
         'excerpt',
         'content',
+        'categories',
+        'tags',
         'title',
         'description',
         'keywords',

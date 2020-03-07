@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.5 (2020-03-07)
+ * Added base API for Blog module
+ 
 ## 1.3.4 (2020-02-25)
  * Added base API for Search module
  

@@ -173,7 +173,7 @@ class ApiController extends Controller
                 'attributes' => ['id', 'class', 'status'],
             ],
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 20,
             ],
         ]);
 
@@ -183,7 +183,7 @@ class ApiController extends Controller
                 'attributes' => ['id', 'class', 'status'],
             ],
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 20,
             ],
         ]);
 

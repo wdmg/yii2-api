@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.3.4
+ * @version         1.3.5
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -45,7 +45,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.3.4";
+    private $version = "1.3.5";
 
     /**
      * @var integer, priority of initialization
@@ -91,6 +91,7 @@ class Module extends BaseModule
         'public' => [
             "wdmg\api\models\api\MailerAPI" => false,
             "wdmg\api\models\api\NewsAPI" => true,
+            "wdmg\api\models\api\BlogAPI" => true,
             "wdmg\api\models\api\OptionsAPI" => false,
             "wdmg\api\models\api\PagesAPI" => true,
             "wdmg\api\models\api\SearchAPI" => true,
@@ -107,6 +108,7 @@ class Module extends BaseModule
         'private' => [
             "wdmg\api\models\api\MailerAPI" => true,
             "wdmg\api\models\api\NewsAPI" => true,
+            "wdmg\api\models\api\BlogAPI" => true,
             "wdmg\api\models\api\OptionsAPI" => true,
             "wdmg\api\models\api\PagesAPI" => true,
             "wdmg\api\models\api\SearchAPI" => true,

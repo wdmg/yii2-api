@@ -4,7 +4,7 @@
   "keywords": ["yii2", "yii2-api", "api", "wdmg"],
   "type": "yii2-extension",
   "license": "MIT",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "homepage": "https://github.com/wdmg/yii2-api",
   "support": {
     "source": "https://github.com/wdmg/yii2-api",
@@ -56,6 +56,7 @@
         "public": {
           "wdmg\\api\\models\\api\\MailerAPI": false,
           "wdmg\\api\\models\\api\\NewsAPI": true,
+          "wdmg\\api\\models\\api\\BlogAPI": true,
           "wdmg\\api\\models\\api\\OptionsAPI": false,
           "wdmg\\api\\models\\api\\PagesAPI": true,
           "wdmg\\api\\models\\api\\RedirectsAPI": false,
@@ -67,6 +68,7 @@
         "private": {
           "wdmg\\api\\models\\api\\MailerAPI": true,
           "wdmg\\api\\models\\api\\NewsAPI": true,
+          "wdmg\\api\\models\\api\\BlogAPI": true,
           "wdmg\\api\\models\\api\\OptionsAPI": true,
           "wdmg\\api\\models\\api\\PagesAPI": true,
           "wdmg\\api\\models\\api\\RedirectsAPI": true,
