@@ -3,23 +3,29 @@
 namespace wdmg\api\models\api;
 
 use Yii;
-use wdmg\blog\models\Posts;
+use wdmg\media\models\Media;
 
-class BlogAPI extends Posts
+class MediaAPI extends Media
 {
     private $allowedFields = [
         'id',
+        'cat_id',
         'name',
         'alias',
-        'image',
-        'excerpt',
-        'content',
-        'categories',
-        'tags',
-        'title',
-        'description',
-        'keywords',
+        'path',
+
         'url',
+        'thumbnail',
+
+        'size',
+        'title',
+        'caption',
+        'description',
+        'mime_type',
+
+        /*'params',
+        'reference',*/
+
         'status',
         'created_at',
         'created_by',
@@ -32,6 +38,18 @@ class BlogAPI extends Posts
         if (!$fields = parent::fields())
             $fields = parent::attributes();
 
+        if (!isset($fields['url'])) {
+            $fields['url'] = function() {
+                return $this->getUrl();
+            };
+        }
+
+        if (!isset($fields['thumbnail'])) {
+            $fields['thumbnail'] = function() {
+                return $this->getThumbnail();
+            };
+        }
+
         foreach ($fields as $key => $field) {
             if (!in_array($key, $this->allowedFields))
                 unset($fields[$key]);
@@ -43,12 +61,7 @@ class BlogAPI extends Posts
     public function extraFields()
     {
         return [
-            'tags' => function() {
-                return $this->getTags();
-            },
-            'categories' => function() {
-                return $this->getCategories();
-            },
+            'categories',
             /*'created_by' => function() {
                 return $this->getCreatedBy();
             },

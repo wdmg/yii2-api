@@ -192,6 +192,8 @@ class AccessController extends Controller
             '/api/blog' => 'Blog API',
             '/api/mailer' => 'Mailer API',
 
+            '/api/media' => 'Media API',
+
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',
 

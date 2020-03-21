@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.3.6 (2020-03-21)
+ * Added base API for Media module
+ * Expand API for Blog module
+
 ## 1.3.5 (2020-03-07)
  * Added base API for Blog module
  
