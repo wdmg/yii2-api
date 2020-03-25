@@ -21,12 +21,12 @@
     }
   ],
   "require": {
-    "yiisoft/yii2": "^2.0.20",
-    "wdmg/yii2-base": "^1.0.1",
+    "yiisoft/yii2": "^2.0.33",
+    "wdmg/yii2-base": "^1.1.6",
     "wdmg/yii2-users": "^1.1.4",
     "wdmg/yii2-options": "^1.5.0",
-    "wdmg/yii2-selectinput": "^1.0.5",
-    "wdmg/yii2-datepicker": "^1.0.5",
+    "wdmg/yii2-selectinput": "^1.0.7",
+    "wdmg/yii2-datepicker": "^1.0.6",
     "bower-asset/clipboard": "*"
   },
   "minimum-stability": "dev",
