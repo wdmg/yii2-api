@@ -38,11 +38,6 @@ JS
     </h1>
 </div>
 <div class="api-index">
-    <?php /*Pjax::begin([
-        'id' => "apiListAjax",
-        'timeout' => 5000
-    ]); ?>
-    <?php Pjax::end();*/ ?>
     <?= Tabs::widget([
         'items' => [
             [

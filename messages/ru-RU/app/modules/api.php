@@ -62,6 +62,11 @@ return [
     'This method not allowed for API.' => "Этот метод не разрешен для API.",
     'Access to API has blocked.' => "Доступ к API заблокирован.",
 
+    'First page' => 'Первая страница',
+    'Last page' => 'Последняя страница',
+    '&larr; Prev page' => '&larr; Предыдущая страница',
+    'Next page &rarr;' => 'Следующая страница &rarr;',
+
     'Access to all public API has disabled.' => "Доступ ко всем публичным API закрыт.",
     'Access to this public API has disabled.' => "Доступ к данному публичному API закрыт.",
     'Access to all private API has disabled.' => "Доступ ко всем приватным API закрыт.",

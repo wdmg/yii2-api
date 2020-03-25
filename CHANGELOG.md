@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.3.7 (2020-03-25)
+ * Added pagination
+ * Up to date dependencies
+ 
 ## 1.3.6 (2020-03-21)
  * Added base API for Media module
  * Expand API for Blog module

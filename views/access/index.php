@@ -205,6 +205,21 @@ JS
                 'template' => '{view}&nbsp;{update}&nbsp;{delete}&nbsp;{refresh}&nbsp;{play}'
             ]
         ],
+        'pager' => [
+            'options' => [
+                'class' => 'pagination',
+            ],
+            'maxButtonCount' => 5,
+            'activePageCssClass' => 'active',
+            'prevPageCssClass' => '',
+            'nextPageCssClass' => '',
+            'firstPageCssClass' => 'previous',
+            'lastPageCssClass' => 'next',
+            'firstPageLabel' => Yii::t('app/modules/api', 'First page'),
+            'lastPageLabel'  => Yii::t('app/modules/api', 'Last page'),
+            'prevPageLabel'  => Yii::t('app/modules/api', '&larr; Prev page'),
+            'nextPageLabel'  => Yii::t('app/modules/api', 'Next page &rarr;')
+        ],
     ]); ?>
     <hr/>
     <div>
