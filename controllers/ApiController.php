@@ -3,7 +3,6 @@
 namespace wdmg\api\controllers;
 
 use Yii;
-use yii\base\DynamicModel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

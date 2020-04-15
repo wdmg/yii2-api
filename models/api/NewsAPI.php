@@ -9,6 +9,7 @@ class NewsAPI extends News
 {
     private $allowedFields = [
         'id',
+        'source_id',
         'name',
         'alias',
         'image',
@@ -18,11 +19,8 @@ class NewsAPI extends News
         'description',
         'keywords',
         'url',
-        'status',
-        'created_at',
-        'created_by',
-        'updated_at',
-        'updated_by'
+        'locale',
+        'status'
     ];
 
     public function fields()
@@ -35,6 +33,36 @@ class NewsAPI extends News
                 unset($fields[$key]);
         }
 
+        $fields['url'] = function ($model) {
+                return $model->getUrl(true);
+        };
+
         return $fields;
+    }
+
+    public function extraFields()
+    {
+        return [
+            'created' => function() {
+                if ($created = $this->getCreatedBy()->one()) {
+                    return [
+                        'id' => $created->id,
+                        'username' => $created->username,
+                        'datetime' => $this->created_at,
+                    ];
+                }
+                return null;
+            },
+            'updated' => function() {
+                if ($updated = $this->getUpdatedBy()->one()) {
+                    return [
+                        'id' => $updated->id,
+                        'username' => $updated->username,
+                        'datetime' => $this->updated_at,
+                    ];
+                }
+                return null;
+            },
+        ];
     }
 }

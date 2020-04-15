@@ -3,26 +3,18 @@
 namespace wdmg\api\models\api;
 
 use Yii;
-use wdmg\blog\models\Posts;
+use wdmg\content\models\Blocks;
 
-class BlogAPI extends Posts
+class ContentAPI extends Blocks
 {
     private $allowedFields = [
         'id',
-        'source_id',
-        'name',
-        'alias',
-        'image',
-        'excerpt',
-        'content',
-        'categories',
-        'tags',
         'title',
         'description',
-        'keywords',
-        'url',
-        'locale',
-        'status'
+        'alias',
+        'fields',
+        'type',
+        'content',
     ];
 
     public function fields()
@@ -35,8 +27,20 @@ class BlogAPI extends Posts
                 unset($fields[$key]);
         }
 
-        $fields['url'] = function ($model) {
-            return $model->getUrl(true);
+        $fields['fields'] = function ($model) {
+            $fields = $model->getFields($model->fields, true);
+            foreach ($fields as $key => $val) {
+                if (!in_array($key, ['id', 'label', 'name', 'type', 'sort_order']))
+                    unset($fields[$key]);
+            }
+            return $fields;
+        };
+
+        $fields['content'] = function ($model) {
+            if ($model->type == $model::CONTENT_BLOCK_TYPE_ONCE)
+                return $model->getBlockContent($this->id, true);
+            elseif ($model->type == $model::CONTENT_BLOCK_TYPE_LIST)
+                return $this->getListContent($model->id, true);
         };
 
         return $fields;
@@ -45,12 +49,6 @@ class BlogAPI extends Posts
     public function extraFields()
     {
         return [
-            'tags' => function() {
-                return $this->getTags();
-            },
-            'categories' => function() {
-                return $this->getCategories();
-            },
             'created' => function() {
                 if ($created = $this->getCreatedBy()->one()) {
                     return [

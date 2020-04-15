@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.3.8 (2020-04-15)
+ * Extend fields
+ * Added base API for Content module
+ 
 ## 1.3.7 (2020-03-25)
  * Added pagination
  * Up to date dependencies

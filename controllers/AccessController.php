@@ -180,7 +180,7 @@ class AccessController extends Controller
         if (Yii::$app->request->get('access-token'))
             $accessToken = Yii::$app->request->get('access-token');
 
-        $model = new \yii\base\DynamicModel(['action', 'request', 'method', 'accept']);
+        $model = new \wdmg\base\models\DynamicModel(['action', 'request', 'method', 'accept']);
 
         $apiActions = [
             '/api/users' => 'Users API',
@@ -197,6 +197,7 @@ class AccessController extends Controller
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',
 
+            '/api/content' => 'Content API',
             '/api/stats' => 'Stats API',
 
             '/api/search' => 'Search API',

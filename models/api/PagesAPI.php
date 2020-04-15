@@ -10,6 +10,7 @@ class PagesAPI extends Pages
     private $allowedFields = [
         'id',
         'parent_id',
+        'source_id',
         'name',
         'alias',
         'content',
@@ -17,11 +18,8 @@ class PagesAPI extends Pages
         'description',
         'keywords',
         'url',
-        'status',
-        'created_at',
-        'created_by',
-        'updated_at',
-        'updated_by'
+        'locale',
+        'status'
     ];
 
     public function fields()
@@ -34,6 +32,36 @@ class PagesAPI extends Pages
                 unset($fields[$key]);
         }
 
+        $fields['url'] = function ($model) {
+            return $model->getUrl(true);
+        };
+
         return $fields;
+    }
+
+    public function extraFields()
+    {
+        return [
+            'created' => function() {
+                if ($created = $this->getCreatedBy()->one()) {
+                    return [
+                        'id' => $created->id,
+                        'username' => $created->username,
+                        'datetime' => $this->created_at,
+                    ];
+                }
+                return null;
+            },
+            'updated' => function() {
+                if ($updated = $this->getUpdatedBy()->one()) {
+                    return [
+                        'id' => $updated->id,
+                        'username' => $updated->username,
+                        'datetime' => $this->updated_at,
+                    ];
+                }
+                return null;
+            },
+        ];
     }
 }
