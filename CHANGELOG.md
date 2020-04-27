@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.9 (2020-04-28)
+ * Update README.md and dependencies
+ 
 ## 1.3.8 (2020-04-15)
  * Extend fields
  * Added base API for Content module

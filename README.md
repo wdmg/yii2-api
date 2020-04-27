@@ -125,6 +125,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.9 - Update README.md and dependencies
 * v.1.3.8 - Added base API for Content module
 * v.1.3.7 - Added pagination, up to date dependencies
 * v.1.3.6 - Added base API for Media module. Expand API for Blog module.
