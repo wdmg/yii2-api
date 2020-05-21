@@ -13,6 +13,7 @@ class ContentAPI extends Blocks
         'description',
         'alias',
         'fields',
+        'locale',
         'type',
         'content',
     ];
@@ -27,20 +28,34 @@ class ContentAPI extends Blocks
                 unset($fields[$key]);
         }
 
-        $fields['fields'] = function ($model) {
-            $fields = $model->getFields($model->fields, true);
+        $id = null;
+        if (isset($_GET['id']))
+            $id = intval($_GET['id']);
+
+        if (is_null($id))
+            $id = $this->id;
+
+        $locale = null;
+        if (isset($_GET['locale']))
+            $locale = trim($_GET['locale']);
+
+        if (is_null($locale))
+            $locale = $this->locale;
+
+        /*$fields['fields'] = function () use ($locale) {
+            $fields = $this->getFields(null, $locale, true);
             foreach ($fields as $key => $val) {
-                if (!in_array($key, ['id', 'label', 'name', 'type', 'sort_order']))
+                if (!in_array($key, ['id', 'label', 'locale', 'name', 'type', 'sort_order']))
                     unset($fields[$key]);
             }
             return $fields;
-        };
+        };*/
 
-        $fields['content'] = function ($model) {
-            if ($model->type == $model::CONTENT_BLOCK_TYPE_ONCE)
-                return $model->getBlockContent($this->id, true);
-            elseif ($model->type == $model::CONTENT_BLOCK_TYPE_LIST)
-                return $this->getListContent($model->id, true);
+        $fields['content'] = function () use ($id, $locale) {
+            if ($this->type == $this::CONTENT_BLOCK_TYPE_ONCE)
+                return $this->getBlockContent($id, $locale, true);
+            elseif ($this->type == $this::CONTENT_BLOCK_TYPE_LIST)
+                return $this->getListContent($id, $locale, true);
         };
 
         return $fields;
