@@ -193,6 +193,7 @@ class AccessController extends Controller
             '/api/mailer' => 'Mailer API',
 
             '/api/media' => 'Media API',
+            '/api/comments' => 'Comments API',
 
             '/api/tasks' => 'Tasks API',
             '/api/tickets' => 'Tickets API',

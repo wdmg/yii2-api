@@ -1,4 +1,4 @@
-[![Yii2](https://img.shields.io/badge/required-Yii2_v2.0.33-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
+[![Yii2](https://img.shields.io/badge/required-Yii2_v2.0.35-blue.svg)](https://packagist.org/packages/yiisoft/yii2)
 [![Downloads](https://img.shields.io/packagist/dt/wdmg/yii2-api.svg)](https://packagist.org/packages/wdmg/yii2-api)
 [![Packagist Version](https://img.shields.io/packagist/v/wdmg/yii2-api.svg)](https://packagist.org/packages/wdmg/yii2-api)
 ![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
@@ -9,7 +9,7 @@ API control module
 
 # Requirements 
 * PHP 5.6 or higher
-* Yii2 v.2.0.33 and newest
+* Yii2 v.2.0.35 and newest
 * [Yii2 Base](https://github.com/wdmg/yii2-base) module (required)
 * [Yii2 Users](https://github.com/wdmg/yii2-users) module (required)
 * [Yii2 Options](https://github.com/wdmg/yii2-options) module (support)
@@ -125,6 +125,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.10 - Added base API for Comments module
 * v.1.3.9 - Update README.md and dependencies
 * v.1.3.8 - Added base API for Content module
 * v.1.3.7 - Added pagination, up to date dependencies

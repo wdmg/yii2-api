@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.3.*
+## 1.3.10
+ * Added base API for Comments module
  * Disable strictParsing for UrlManager
 
 ## 1.3.9 (2020-04-28)

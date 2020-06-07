@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.3.9
+ * @version         1.3.10
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -45,7 +45,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.3.9";
+    private $version = "1.3.10";
 
     /**
      * @var integer, priority of initialization
@@ -97,6 +97,7 @@ class Module extends BaseModule
             "wdmg\api\models\api\PagesAPI" => true,
             "wdmg\api\models\api\MediaAPI" => true,
             "wdmg\api\models\api\SearchAPI" => true,
+            "wdmg\api\models\api\CommentsAPI" => true,
             "wdmg\api\models\api\LiveSearchAPI" => false,
             "wdmg\api\models\api\RedirectsAPI" => false,
             "wdmg\api\models\api\StatsAPI" => false,
@@ -116,6 +117,7 @@ class Module extends BaseModule
             "wdmg\api\models\api\PagesAPI" => true,
             "wdmg\api\models\api\MediaAPI" => true,
             "wdmg\api\models\api\SearchAPI" => true,
+            "wdmg\api\models\api\CommentsAPI" => true,
             "wdmg\api\models\api\LiveSearchAPI" => true,
             "wdmg\api\models\api\RedirectsAPI" => true,
             "wdmg\api\models\api\StatsAPI" => true,
@@ -234,12 +236,10 @@ class Module extends BaseModule
             }
         }
         // Get URL path prefix if exist
-        if (isset($module->routePrefix)) {
-            $app->getUrlManager()->enableStrictParsing = false;
+        if (isset($module->routePrefix))
             $prefix = $module->routePrefix . '/';
-        } else {
+        else
             $prefix = '';
-        }
 
         // Add module URL rules
         $app->getUrlManager()->addRules(
