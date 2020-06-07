@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.*
+ * Disable strictParsing for UrlManager
+
 ## 1.3.9 (2020-04-28)
  * Update README.md and dependencies
  

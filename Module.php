@@ -235,7 +235,7 @@ class Module extends BaseModule
         }
         // Get URL path prefix if exist
         if (isset($module->routePrefix)) {
-            $app->getUrlManager()->enableStrictParsing = true;
+            $app->getUrlManager()->enableStrictParsing = false;
             $prefix = $module->routePrefix . '/';
         } else {
             $prefix = '';
