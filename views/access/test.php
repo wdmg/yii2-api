@@ -3,12 +3,15 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use wdmg\widgets\SelectInput;
+use wdmg\api\HighLightAsset;
+
 /* @var $this yii\web\View */
 /* @var $searchModel wdmg\api\models\API */
 
 $this->title = Yii::t('app/modules/api', 'Test API');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/modules/api', 'Private access to API`s'), 'url' => ['access/index']];
 $this->params['breadcrumbs'][] = $this->title;
+HighLightAsset::register($this);
 
 ?>
 <div class="page-header">
@@ -59,30 +62,32 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
-<?php $this->registerJs(
-    'var $form = $("#testApiForm");
-    if ($form.length > 0) {
+<?php $this->registerJs(<<< JS
+    var _form = $("#testApiForm");
+    if (_form.length > 0) {
 
         var resend = false;
-        $form.find(\'#sendRequest\').on(\'click\', function() {
+        _form.find('#sendRequest').on('click', function() {
         
-            $(\'#testApiResponse\').text(\'\');
+            $('#testApiResponse').text('');
         
-            var requestMethod = \'get\';
-            if ($form.find(\'#dynamicmodel-method\').val())
-                requestMethod = $form.find(\'#dynamicmodel-method\').val();
+            var requestMethod = 'get';
+            if (_form.find('#dynamicmodel-method').val())
+                requestMethod = _form.find('#dynamicmodel-method').val();
             
             var requestURL = window.location.href;
-            if ($form.find(\'#dynamicmodel-action\').val())
-                requestURL = $form.find(\'#dynamicmodel-action\').val();
+            if (_form.find('#dynamicmodel-action').val())
+                requestURL = _form.find('#dynamicmodel-action').val();
                 
-            if ($form.find(\'#dynamicmodel-request\').val())
-                requestURL = requestURL + $form.find(\'#dynamicmodel-request\').val();
+            if (_form.find('#dynamicmodel-request').val())
+                requestURL = requestURL + _form.find('#dynamicmodel-request').val();
             
-            var requestAccept = \'json\';
-            if ($form.find(\'#dynamicmodel-accept\').val())
-                requestAccept = $form.find(\'#dynamicmodel-accept\').val();
-                
+            var requestAccept = 'json';
+            if (_form.find('#dynamicmodel-accept').val())
+                requestAccept = _form.find('#dynamicmodel-accept').val();
+            
+            $('#testApiResponse').removeAttr('class');
+            
             $.ajax({
                 type: requestMethod,
                 url: requestURL,
@@ -90,57 +95,59 @@ $this->params['breadcrumbs'][] = $this->title;
                 cache: false,
                 complete: function(data) {
                     if(data) {
-                        if (requestAccept == \'json\' && !(typeof data === "object")) {
+                        if (requestAccept == 'json' && !(typeof data === "object")) {
                             var data = $.parseJSON(data);
                         }
                         if (data.status == 200) {
-                            if(requestAccept == \'json\' && data.responseJSON) {
-                                var jsonText = JSON.stringify(data.responseJSON, null, 2);
-                                $(\'#testApiResponse\').text(jsonText);
+                            if (requestAccept == 'json' && data.responseJSON) {
+                                var json = JSON.stringify(data.responseJSON, null, 2);
+                                $('#testApiResponse').html('<code>' + json + '</code>');
+                                hljs.initHighlighting.called = false;
+                                hljs.highlightBlock($('#testApiResponse').get(0));
                             }
-                            if(requestAccept == \'xml\' && data.responseXML) {
-                                var xmlText = new XMLSerializer().serializeToString(data.responseXML);
-                                $(\'#testApiResponse\').text(xmlText);
+                            if (requestAccept == 'xml' && data.responseXML) {
+                                var xml = new XMLSerializer().serializeToString(data.responseXML);
+                                $('#testApiResponse').html('<code>' + xml.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+                                    return '&#'+i.charCodeAt(0)+';';
+                                }) + '</code>');
+                                hljs.initHighlighting.called = false;
+                                hljs.highlightBlock($('#testApiResponse').get(0));
                             }
                         }
-                        /*if (data.status && data.response.message) {
-                            $(\'#testApiStatus\').html(data.response.status +\' \'+ data.response.message);
-                        }*/
                     }
-                    console.log(\'Request complete\', data);
+                    console.log('Request complete', data);
                     
                     if (data.status && data.statusText) {
-                        var labelClass = \'default\';
+                        var labelClass = 'default';
                         
                         if (data.status == 429) {
-                            labelClass = \'warning\';
+                            labelClass = 'warning';
                         } else if (data.status >= 399) {
-                            labelClass = \'danger\';
+                            labelClass = 'danger';
                         } else if (data.status >= 299) {
-                            labelClass = \'info\';
+                            labelClass = 'info';
                         } else if (data.status >= 199) {
-                            labelClass = \'success\';
+                            labelClass = 'success';
                         }
-                        $(\'#testApiStatus\').html(\'<span class="label label-\' + labelClass + \'">\' + data.status + \'</span>\' + \'&nbsp;\' + \'<span class="text-\' + labelClass + \'">\' + data.statusText + \'</span>\');
+                        $('#testApiStatus').html('<span class="label label-' + labelClass + '">' + data.status + '</span>' + '&nbsp;' + '<span class="text-' + labelClass + '">' + data.statusText + '</span>');
                     }
                     
-                    if (data.getResponseHeader(\'X-Access-Token\') && !resend) {
-                        var accessToken = \'?access-token=\' + data.getResponseHeader(\'X-Access-Token\');
-                        $form.find(\'#dynamicmodel-request\').val(accessToken);
-                        console.log(\'Set new access token\', accessToken);
-                        $form.find(\'#sendRequest\').click();
+                    if (data.getResponseHeader('X-Access-Token') && !resend) {
+                        var accessToken = '?access-token=' + data.getResponseHeader('X-Access-Token');
+                        _form.find('#dynamicmodel-request').val(accessToken);
+                        console.log('Set new access token', accessToken);
+                        _form.find('#sendRequest').click();
                         resend = true;
                     }
                 },
                 error: function(data) {
-                    console.log(\'Request error\', data);
+                    console.log('Request error', data);
                 }
             });
             return false;
         });
-
-    }', \yii\web\View::POS_READY
-); ?>
-
+    }
+JS
+, \yii\web\View::POS_READY); ?>
 
 <?php echo $this->render('../_debug'); ?>

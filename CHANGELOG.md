@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 1.3.10
+ * Added Highlight for response API
  * Added base API for Comments module
  * Disable strictParsing for UrlManager
 
