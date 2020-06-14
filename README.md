@@ -4,8 +4,12 @@
 ![Progress](https://img.shields.io/badge/progress-ready_to_use-green.svg)
 [![GitHub license](https://img.shields.io/github/license/wdmg/yii2-api.svg)](https://github.com/wdmg/yii2-api/blob/master/LICENSE)
 
+<img src="./docs/images/yii2-api.png" width="100%" alt="Yii2 API module" />
+
 # Yii2 API
-API control module
+API control module for Yii2.
+This module is an integral part of the [Butterfly.СMS](https://butterflycms.com/) content management system, but can also be used as an standalone extension.
+Copyrights (c) 2019-2020 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
 
 # Requirements 
 * PHP 5.6 or higher
@@ -125,6 +129,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.3.11 - Update README.md and dependencies
 * v.1.3.10 - Added base API for Comments module
 * v.1.3.9 - Update README.md and dependencies
 * v.1.3.8 - Added base API for Content module

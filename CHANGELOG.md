@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 1.3.10
+## 1.3.11 (2020-06-14)
+ * Update README.md and dependencies
+ 
+## 1.3.10 (2020-06-08)
  * Added Highlight for response API
  * Added base API for Comments module
  * Disable strictParsing for UrlManager

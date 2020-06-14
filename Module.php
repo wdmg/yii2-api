@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.3.10
+ * @version         1.3.11
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 - 2020 W.D.M.Group, Ukraine
@@ -40,12 +40,12 @@ class Module extends BaseModule
     /**
      * @var string, the description of module
      */
-    public $description = "API control module";
+    public $description = "API control module with testing tool";
 
     /**
      * @var string the module version
      */
-    private $version = "1.3.10";
+    private $version = "1.3.11";
 
     /**
      * @var integer, priority of initialization
