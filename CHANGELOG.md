@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.12 (2020-12-24)
+ * Added base API for Menu module
+ 
 ## 1.3.11 (2020-06-14)
  * Update README.md and dependencies
  

@@ -201,6 +201,8 @@ class AccessController extends Controller
             '/api/content' => 'Content API',
             '/api/stats' => 'Stats API',
 
+            '/api/menu' => 'Menu API',
+
             '/api/search' => 'Search API',
             '/api/live-search' => 'LiveSearch API',
 
