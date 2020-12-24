@@ -2,6 +2,7 @@ Changelog
 =========
 
 ## 1.3.12 (2020-12-24)
+ * Request helper for testing area
  * Added base API for Menu module
  
 ## 1.3.11 (2020-06-14)

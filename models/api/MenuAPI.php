@@ -42,8 +42,22 @@ class MenuAPI extends Menu
 
             foreach ($items as &$item) {
                 foreach ($item as $key => $data) {
-                    if (!in_array($key, $this->allowedFields2))
+                    if (!in_array($key, $this->allowedFields2)) {
                         unset($item[$key]);
+                    } else {
+
+                        if (!isset($item['parent_id']))
+                            $item['parent_id'] = 0;
+                        else
+                            $item['parent_id'] = intval($item['parent_id']);
+
+                        if (isset($item['only_auth']))
+                            $item['only_auth'] = boolval($item['only_auth']);
+
+                        if (isset($item['target_blank']))
+                            $item['target_blank'] = boolval($item['target_blank']);
+
+                    }
                 }
             }
 

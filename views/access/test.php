@@ -45,6 +45,14 @@ HighLightAsset::register($this);
         ])->label(Yii::t('app/modules/api', 'Accept') . ":"); ?>
         <?= $form->field($model, 'request')->textarea(['value' => '?access-token='.$accessToken, 'rows' => 6])
             ->label(Yii::t('app/modules/api', 'Request') . ":"); ?>
+
+        <div id="requestHelper" class="form-group">
+            <a href="#" class="btn btn-link btn-sm" data-var="access-token" data-value="<?= $accessToken ?>">?access-token=*</a>
+            <a href="#" class="btn btn-link btn-sm" data-var="expand" data-value="created">?expand=created</a>
+            <a href="#" class="btn btn-link btn-sm" data-var="expand" data-value="updated">?expand=updated</a>
+            <a href="#" class="btn btn-link btn-sm" data-var="expand" data-value="tags">?expand=tags</a>
+            <a href="#" class="btn btn-link btn-sm" data-var="expand" data-value="categories">?expand=categories</a>
+        </div>
         <hr/>
         <div class="form-group">
             <?= Html::a(Yii::t('app/modules/api', '&larr; Back to list'), ['access/index'], ['class' => 'btn btn-default pull-left']) ?>&nbsp;
@@ -145,6 +153,36 @@ HighLightAsset::register($this);
                 }
             });
             return false;
+        });
+        _form.find('#requestHelper a').on('click', function(event) {
+            event.preventDefault();
+            let target = $(event.target);
+            
+            let data = target.data();
+            if (data.var && data.value) {
+                let request = $('#dynamicmodel-request').val();
+                let params = new URLSearchParams(request);
+                if (params.has(data.var) && data.var !== "access-token") {
+                    params.append(data.var, data.value);
+                    let all = params.get(data.var).split(',');
+                    if (all.includes(data.value)) {
+                        let indx = all.indexOf(data.value);
+                        if (indx != -1) {
+                            all.splice(indx, 1);
+                        }
+                    } else {
+                        all.push(data.value);
+                    }
+                        
+                    params.set(data.var, all.join(','));
+                } else {
+                    params.set(data.var, data.value);
+                }
+                
+                $('#dynamicmodel-request').val('?'+params.toString().replaceAll(['%2C'], [',']));
+            }
+            
+            target.toggleClass('btn-link btn-primary');
         });
     }
 JS

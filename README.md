@@ -129,7 +129,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
-* v.1.3.12 - Added base API for Menu module
+* v.1.3.12 - Added base API for Menu module, request helper
 * v.1.3.11 - Update README.md and dependencies
 * v.1.3.10 - Added base API for Comments module
 * v.1.3.9 - Update README.md and dependencies

@@ -62,12 +62,26 @@ class MediaAPI extends Media
     {
         return [
             'categories',
-            /*'created_by' => function() {
-                return $this->getCreatedBy();
+            'created' => function() {
+                if ($created = $this->getCreatedBy()->one()) {
+                    return [
+                        'id' => $created->id,
+                        'username' => $created->username,
+                        'datetime' => $this->created_at,
+                    ];
+                }
+                return null;
             },
-            'updated_by' => function() {
-                return $this->getUpdatedBy();
-            },*/
+            'updated' => function() {
+                if ($updated = $this->getUpdatedBy()->one()) {
+                    return [
+                        'id' => $updated->id,
+                        'username' => $updated->username,
+                        'datetime' => $this->updated_at,
+                    ];
+                }
+                return null;
+            },
         ];
     }
 }
