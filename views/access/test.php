@@ -96,9 +96,10 @@ HighLightAsset::register($this);
             
             $('#testApiResponse').removeAttr('class');
             
+            let url = new URL(requestURL, window.location.origin);
             $.ajax({
                 type: requestMethod,
-                url: requestURL,
+                url: url.toString(),
                 dataType: requestAccept,
                 cache: false,
                 complete: function(data) {

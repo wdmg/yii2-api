@@ -37,9 +37,10 @@ class MenuAPI extends Menu
                 unset($fields[$key]);
         }
 
-        $fields['items'] = function ($model) {
-            $items = $model->getItems($model->id, true, false);
-
+        $request = Yii::$app->request;
+        $locale = $request->get('locale');
+        $fields['items'] = function ($model) use ($locale) {
+            $items = $model->getItems($model->id, $locale, true, false);
             foreach ($items as &$item) {
                 foreach ($item as $key => $data) {
                     if (!in_array($key, $this->allowedFields2)) {

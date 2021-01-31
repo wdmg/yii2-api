@@ -234,16 +234,18 @@ JS
     var requestURL = window.location.href;
     if ($container.length > 0) {
         $container.delegate(\'[data-toggle="renew-access-token"]\', \'click\', function() {
-            var id = $(this).data(\'id\');
-             $.ajax({
+            let id = $(this).data(\'id\');
+            let url = new URL(requestURL);
+            url.searchParams.set(\'change\', \'access-token\');            
+            $.ajax({
                 type: "POST",
-                url: requestURL + \'?change=access-token\',
+                url: url.toString(),
                 dataType: \'json\',
                 data: {\'id\': id},
                 complete: function(data) {
                     $.pjax.reload({type:\'POST\', container:\'#apiClientsAjax\'});
                 }
-             });
+            });
         });
         $container.delegate(\'[data-toggle="button-switcher"] button\', \'click\', function() {
             var id = $(this).parent(\'.btn-group\').data(\'id\');
