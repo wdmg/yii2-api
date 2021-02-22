@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.3.*
+ * MenuAPI fixed
+
 ## 1.3.12 (2020-12-24)
  * Request helper for testing area
  * Added base API for Menu module
