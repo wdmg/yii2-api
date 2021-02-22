@@ -10,7 +10,7 @@ class MenuAPI extends Menu
 {
     private $allowedFields = [
         'id',
-        'title',
+        'name',
         'description',
         'alias',
         'status',
@@ -40,26 +40,29 @@ class MenuAPI extends Menu
         $request = Yii::$app->request;
         $locale = $request->get('locale');
         $fields['items'] = function ($model) use ($locale) {
-            $items = $model->getItems($model->id, $locale, true, false);
-            foreach ($items as &$item) {
-                foreach ($item as $key => $data) {
-                    if (!in_array($key, $this->allowedFields2)) {
-                        unset($item[$key]);
-                    } else {
+            if ($items = $model->getItems($model->id, $locale, true, false)) {
+                foreach ($items as &$item) {
+                    foreach ($item as $key => $data) {
+                        if (!in_array($key, $this->allowedFields2)) {
+                            unset($item[$key]);
+                        } else {
 
-                        if (!isset($item['parent_id']))
-                            $item['parent_id'] = 0;
-                        else
-                            $item['parent_id'] = intval($item['parent_id']);
+                            if (isset($item['parent_id']))
+                                $item['parent_id'] = intval($item['parent_id']);
+                            else
+                                $item['parent_id'] = null;
 
-                        if (isset($item['only_auth']))
-                            $item['only_auth'] = boolval($item['only_auth']);
+                            if (isset($item['only_auth']))
+                                $item['only_auth'] = boolval($item['only_auth']);
 
-                        if (isset($item['target_blank']))
-                            $item['target_blank'] = boolval($item['target_blank']);
+                            if (isset($item['target_blank']))
+                                $item['target_blank'] = boolval($item['target_blank']);
 
+                        }
                     }
                 }
+            } else {
+                return null;
             }
 
             return $items;

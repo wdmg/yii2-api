@@ -169,7 +169,7 @@ class RestController extends ActiveController
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        if(is_null($model))
+        if (is_null($model))
             $model = $this->modelClass;
 
         parent::checkAccess($action, $this->modelClass, $params);

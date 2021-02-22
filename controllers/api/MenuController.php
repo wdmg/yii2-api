@@ -2,10 +2,11 @@
 
 namespace wdmg\api\controllers\api;
 
+use Yii;
 use yii\base\BaseObject;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 use wdmg\api\controllers\RestController;
-use Yii;
 
 class MenuController extends RestController
 {
@@ -25,6 +26,45 @@ class MenuController extends RestController
             throw new NotFoundHttpException('Requested API not found.');
 
         parent::init();
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        return $actions;
+    }
+
+    public function prepareDataProvider()
+    {
+        $requestParams = Yii::$app->getRequest()->getBodyParams();
+        if (empty($requestParams)) {
+            $requestParams = Yii::$app->getRequest()->getQueryParams();
+        }
+
+        /* @var $modelClass \yii\db\BaseActiveRecord */
+        $modelClass = $this->modelClass;
+        $query = $modelClass::find();
+        $request = Yii::$app->request;
+
+        if ($locale = $request->get('locale', null))
+            $query->andWhere(['locale' => $locale]);
+
+        if (!empty($filter)) {
+            $query->andWhere($filter);
+        }
+
+        return Yii::createObject([
+            'class' => ActiveDataProvider::className(),
+            'query' => $query,
+            'pagination' => [
+                'params' => $requestParams,
+            ],
+            'sort' => [
+                'params' => $requestParams,
+            ],
+        ]);
+
     }
 }
 
