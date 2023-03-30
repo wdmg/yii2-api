@@ -9,7 +9,7 @@
 # Yii2 API
 API control module for Yii2.
 This module is an integral part of the [Butterfly.СMS](https://butterflycms.com/) content management system, but can also be used as an standalone extension.
-Copyrights (c) 2019-2021 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
+Copyrights (c) 2019-2023 [W.D.M.Group, Ukraine](https://wdmg.com.ua/)
 
 # Requirements 
 * PHP 5.6 or higher
@@ -129,13 +129,7 @@ Use the `Module::dashboardNavItems()` method of the module to generate a navigat
     ?>
 
 # Status and version [ready to use]
+* v.1.4.0 - Update dependencies, copyrights
 * v.1.3.12 - Added base API for Menu module, request helper
 * v.1.3.11 - Update README.md and dependencies
 * v.1.3.10 - Added base API for Comments module
-* v.1.3.9 - Update README.md and dependencies
-* v.1.3.8 - Added base API for Content module
-* v.1.3.7 - Added pagination, up to date dependencies
-* v.1.3.6 - Added base API for Media module. Expand API for Blog module.
-* v.1.3.5 - Added base API for Blog module
-* v.1.3.4 - Added base API for Search module
-* v.1.3.3 - Fixed deprecated class declaration

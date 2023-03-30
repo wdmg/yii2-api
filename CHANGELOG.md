@@ -1,7 +1,8 @@
 Changelog
 =========
 
-## 1.3.*
+## 1.4.0
+ * Update dependencies, copyrights
  * MenuAPI fixed
 
 ## 1.3.12 (2020-12-24)
