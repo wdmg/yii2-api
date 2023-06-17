@@ -19,7 +19,7 @@ class APISearch extends API
         return [
             [['id', 'user_id', 'status'], 'integer'],
             [['user_ip', 'access_token'], 'string'],
-            [['created_at', 'updated_at', 'allowance_at'], 'safe'],
+            [['created_at', 'updated_at', 'allowance_at', 'expired_at'], 'safe'],
         ];
     }
 
@@ -72,6 +72,7 @@ class APISearch extends API
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'allowance_at' => $this->allowance_at,
+            'expired_at' => $this->expired_at,
         ]);
 
         return $dataProvider;

@@ -6,7 +6,7 @@ namespace wdmg\api;
  * Yii2 API
  *
  * @category        Module
- * @version         1.4.0
+ * @version         2.0.0
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
  * @link            https://github.com/wdmg/yii2-api
  * @copyright       Copyright (c) 2019 - 2023 W.D.M.Group, Ukraine
@@ -45,7 +45,7 @@ class Module extends BaseModule
     /**
      * @var string the module version
      */
-    private $version = "1.4.0";
+    private $version = "2.0.0";
 
     /**
      * @var integer, priority of initialization
@@ -142,6 +142,12 @@ class Module extends BaseModule
      */
     public $blockedIp = [];
 
+	/**
+	 * @var array, the list of support locales for multi-language versions of posts.
+	 * @note This variable will be override if you use the `wdmg\yii2-translations` module.
+	 */
+	public $supportLocales = ['ru-RU', 'uk-UA', 'en-US'];
+
     /**
      * {@inheritdoc}
      */
@@ -196,6 +202,7 @@ class Module extends BaseModule
             $app->getRequest()->parsers[] = ['application/json' => 'yii\web\JsonParser'];
             $app->getRequest()->enableCookieValidation = false;
             $app->getRequest()->enableCsrfValidation = false;
+	        $app->getRequest()->enableCsrfCookie = false;
             Yii::$app->response->cookies->removeAll();
 
             // Configure API-auth component
@@ -208,8 +215,20 @@ class Module extends BaseModule
                         'identityClass' => 'wdmg\api\models\API',
                         'enableAutoLogin' => false,
                         'enableSession' => false,
-                    ]
+                    ], [
+		                'class' => 'yii\filters\ContentNegotiator',
+		                'formats' => [
+			                'application/json' => yii\web\Response::FORMAT_JSON,
+                            'application/xml' => yii\web\Response::FORMAT_XML,
+		                ],
+		                'languages' => [
+			                'en',
+			                'ru',
+			                'uk',
+		                ]
+	                ]
                 ]);
+
                 $app->getUrlManager()->addRules([
                     [
                         'class' => 'yii\rest\UrlRule',
@@ -234,8 +253,15 @@ class Module extends BaseModule
 
 
                 ], false);
+
+				if (strpos(Yii::$app->request->headers['accept'], 'json') != false)
+					Yii::$app->response->format = 'json';
+				else if (strpos(Yii::$app->request->headers['accept'], 'xml') != false)
+					Yii::$app->response->format = 'xml';
+
             }
         }
+
         // Get URL path prefix if exist
         if (isset($module->routePrefix))
             $prefix = $module->routePrefix . '/';

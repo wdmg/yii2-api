@@ -180,7 +180,7 @@ class AccessController extends Controller
         if (Yii::$app->request->get('access-token'))
             $accessToken = Yii::$app->request->get('access-token');
 
-        $model = new \wdmg\base\models\DynamicModel(['action', 'request', 'method', 'accept']);
+        $model = new \wdmg\base\models\DynamicModel(['action', 'request', 'method', 'auth', 'token', 'accept', 'curl']);
 
         $apiActions = [
             '/api/users' => 'Users API',
@@ -222,6 +222,12 @@ class AccessController extends Controller
             'options' => 'OPTIONS'
         ];
 
+	    $authMethods = [
+            'basicAuth' => 'Basic Authorization',
+            'bearerAuth' => 'Bearer Authorization',
+            'paramAuth' => 'Authorization by param',
+        ];
+
         $acceptResponses = [
             'json' => 'application/json',
             'xml' => 'application/xml'
@@ -232,10 +238,23 @@ class AccessController extends Controller
         $model->addRule(['method'], 'in', ['range' => array_keys($allowedMethods)]);
         $model->addRule(['method'], 'default', ['value' => 'post']);
 
+        $model->addRule(['auth'], 'in', ['range' => array_keys($authMethods)]);
+        $model->addRule(['auth'], 'default', ['value' => 'bearerAuth']);
+
+	    $model->addRule(['token'], 'string');
+	    $model->addRule(['token'], 'filter', ['filter' => function ($value) {
+	        return base64_encode(base64_decode($value, true));
+	    }]);
+        $model->addRule(['token'], 'default', ['value' => $accessToken]);
+	    $model->addRule(['token'], 'required', ['when' => function ($model) {
+		    return in_array($model->auth, ['basicAuth', 'bearerAuth']);
+	    }]);
+
         $model->addRule(['accept'], 'in', ['range' => array_keys($acceptResponses)]);
         $model->addRule(['accept'], 'default', ['value' => 'json']);
 
         $model->addRule(['request'], 'string', ['min' => 3, 'max' => 255]);
+        $model->addRule(['curl'], 'string');
 
         $model->addRule(['action', 'method', 'accept'], 'required');
 
@@ -247,6 +266,7 @@ class AccessController extends Controller
             'model' => $model,
             'apiActions' => $apiActions,
             'requestMethods' => $allowedMethods,
+            'authMethods' => $authMethods,
             'acceptResponses' => $acceptResponses,
             'accessToken' => $accessToken,
         ]);

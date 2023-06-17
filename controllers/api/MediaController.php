@@ -22,7 +22,7 @@ class MediaController extends RestController
         if(class_exists('\wdmg\media\models\Media') && Yii::$app->hasModule($module_id))
             $this->modelClass = 'wdmg\api\models\api\MediaAPI';
         else
-            throw new NotFoundHttpException('Requested API not found.');
+	        throw new NotFoundHttpException('Requested API not found.', -1);
 
         parent::init();
     }

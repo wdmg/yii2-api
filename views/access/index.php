@@ -168,6 +168,33 @@ JS
                 },
             ],
             [
+                'attribute' => 'expired_at',
+                'format' => 'datetime',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'expired_at',
+                    'options' => [
+                        'class' => 'form-control'/*,
+                        'value' => date('Y-m-s H:i:s')*/
+                    ],
+                    'pluginOptions' => [
+                        'className' => '.datepicker',
+                        'input' => '.form-control',
+                        'format' => 'YYYY-MM-DD HH:mm:ss',
+                        'toggle' => '.input-group-btn > button',
+                    ]
+                ]),
+                'headerOptions' => [
+                    'class' => 'text-center'
+                ],
+                'contentOptions' => [
+                    'class' => 'text-center'
+                ],
+                'value' => function($data) {
+                    return $data->expired_at;
+                },
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => Yii::t('app/modules/api', 'Actions'),
                 'contentOptions' => [

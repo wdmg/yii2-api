@@ -19,13 +19,13 @@ use yii\validators\IpValidator;
  * @property int $id
  * @property int $user_id
  * @property string $user_ip
- * @property string $entity_id
- * @property int $target_id
- * @property int $is_like
+ * @property string $access_token
+ * @property int $status
  * @property string $created_at
  * @property string $updated_at
  * @property string $allowance
  * @property string $allowance_at
+ * @property string $expired_at
  *
  * @property Users $user
  */
@@ -102,7 +102,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
             [['user_ip'], 'string', 'max' => 39],
             [['user_ip'], 'checkIPList'],
             [['access_token'], 'string', 'max' => 32],
-            [['created_at', 'updated_at', 'allowance', 'allowance_at'], 'safe'],
+            [['created_at', 'updated_at', 'allowance', 'allowance_at', 'expired_at'], 'safe'],
         ];
 
         $module_id = 'users';
@@ -133,8 +133,10 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function beforeSave($insert)
     {
-        if ($insert)
-            $this->access_token = self::generateAccessToken();
+        if ($insert) {
+	        $this->access_token = self::generateAccessToken();
+			$this->expired_at = self::generateExpiredTime();
+        }
 
         return parent::beforeSave($insert);
     }
@@ -198,6 +200,29 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
         return static::findOne(['user_id' => $id, 'status' => self::API_CLIENT_STATUS_ACTIVE]);
     }
 
+	/**
+	 * Add new client identity
+	 * @return string
+	 */
+    public static function addNewIdentity($id, $validationErrors = true) {
+
+	    $model = new self;
+	    $model->setAttributes([
+		    'user_id' => (int)$id,
+		    'status' => self::API_CLIENT_STATUS_ACTIVE,
+		    'user_ip' => (Yii::$app->request->userIP) ? Yii::$app->request->userIP : null,
+	    ]);
+
+	    if ($model->save(true)) {
+		    return $model;
+	    } else {
+		    if ($validationErrors)
+			    return $model->getErrors();
+	    }
+
+		return null;
+    }
+
     /**
      * Generates new access token
      * @return string
@@ -206,6 +231,18 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
     {
         $this->access_token = Yii::$app->security->generateRandomString();
         return $this->access_token;
+    }
+
+    /**
+     * Generates new access token
+     * @return string
+     */
+    public function generateExpiredTime()
+    {
+		if ($this->accessTokenExpire)
+	        $this->expired_at = date('Y-m-d H:i:s', strtotime('+' . $this->accessTokenExpire . ' SECOND'));
+
+	    return $this->expired_at;
     }
 
     /**

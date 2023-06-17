@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 1.4.0
+## 2.0.0 (2023-06-18)
+ * Basic Auth fixed
+
+## 1.4.0 (2023-05-30)
  * Update dependencies, copyrights
  * MenuAPI fixed
 

@@ -12,6 +12,7 @@ return [
     'Class' => "Класс",
     'Created At' => "Создано",
     'Updated At' => "Обновлено",
+    'Expired At' => "Истекает",
 
     'Public API`s' => "Публичный API",
     'Private API`s' => "Приватный API",
@@ -32,6 +33,8 @@ return [
     'Accept' => "Формат ответа",
     'Request' => "Запрос",
     'Response' => "Ответ",
+    'Auth' => "Авторизация",
+    'Access Token' => "Токен доступа",
 
     'Active' => "Активно",
     'Disabled' => "Отключено",
