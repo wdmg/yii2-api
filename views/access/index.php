@@ -188,7 +188,7 @@ JS
                     'class' => 'text-center'
                 ],
                 'contentOptions' => [
-                    'class' => 'text-center'
+                    'class' => (strtotime($user->expired_at) <= strtotime('NOW()')) ? 'text-danger text-center' : 'text-center'
                 ],
                 'value' => function($data) {
                     return $data->expired_at;

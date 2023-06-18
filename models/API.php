@@ -133,10 +133,10 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function beforeSave($insert)
     {
-        if ($insert) {
+        if ($insert)
 	        $this->access_token = self::generateAccessToken();
-			$this->expired_at = self::generateExpiredTime();
-        }
+
+	    $this->expired_at = self::generateExpiredTime();
 
         return parent::beforeSave($insert);
     }
@@ -146,7 +146,15 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function getId()
     {
-        return $this->getPrimaryKey();
+		return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId()
+    {
+		return $this->user_id;
     }
 
     /**
@@ -154,7 +162,7 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function getAllowedIP()
     {
-        return $this->user_ip();
+        return $this->user_ip;
     }
 
     /**

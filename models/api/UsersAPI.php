@@ -13,4 +13,12 @@ class UsersAPI extends Users
         unset($fields['auth_key'], $fields['password_hash'], $fields['email_confirm_token'], $fields['password_reset_token']);
         return $fields;
     }
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getUserId()
+	{
+		return $this->id;
+	}
 }

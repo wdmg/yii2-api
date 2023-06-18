@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 2.0.*
+ * Fixed permissions for Users API
+
 ## 2.0.0 (2023-06-18)
  * Basic Auth fixed
 

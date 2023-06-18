@@ -80,6 +80,11 @@ return [
     'You do not have access to API from your IP.' => "У вас нет доступа к API с вашего IP.",
     'The access token expired and has been generated anew.' => "Токен доступа истек и был сгенерирован заново.",
 
+	// Source: vendor/wdmg/yii2-api/controllers/api/UsersController.php
+    'You are not allowed to list users' => "У Вас недостаточно прав для просмотра пользователей",
+    'You are not allowed to view user ID: {user}' => "У Вас недостаточно прав для просмотра пользователя ИД: {user}",
+    'You are not allowed to run this action: {action}' => "У Вас недостаточно прав для выполнения данного действия: {action}",
+
 ];
 
 ?>

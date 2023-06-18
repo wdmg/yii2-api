@@ -141,7 +141,9 @@ class RestController extends ActiveController
 		            'realm' => 'api'
 	            ];
             }
-        } else if ($this->requestMode == 'private' && isset($authMethods['bearerAuth'])) {
+        }
+
+		if ($this->requestMode == 'private' && isset($authMethods['bearerAuth'])) {
 	        if ($authMethods['bearerAuth'] == true) {
 		        $behaviors['authenticator']['authMethods'][] = [
 			        'class' => HttpBearerAuth::class,
@@ -150,7 +152,9 @@ class RestController extends ActiveController
 			        'realm' => 'api'
 		        ];
 	        }
-        } else if ($this->requestMode == 'private' && isset($authMethods['paramAuth'])) {
+        }
+
+		if ($this->requestMode == 'private' && isset($authMethods['paramAuth'])) {
             if ($authMethods['paramAuth'] == true) {
 	            $behaviors['authenticator']['authMethods'][] = [
 		            'class' => QueryParamAuth::class,
@@ -328,6 +332,14 @@ class RestController extends ActiveController
 		Yii::$app->response->headers->remove('X-Pagination-Current-Page');
 		Yii::$app->response->headers->remove('X-Pagination-Per-Page');
 		return $this->serializeData($result);
+	}
+
+	public function getAcceptLanguage() {
+		return $this->acceptLanguage;
+	}
+
+	public function getAuthUserId() {
+		return Yii::$app->getUser()->getIdentity(false)->getUserId();
 	}
 }
 
