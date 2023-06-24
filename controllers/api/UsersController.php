@@ -17,6 +17,7 @@ class UsersController extends RestController
      */
     public function init()
     {
+
         $module_id = 'users';
         if($this->module->module)
             $module_id = $this->module->module->id . '/' . $module_id;
@@ -27,7 +28,7 @@ class UsersController extends RestController
         else
             throw new NotFoundHttpException('Requested API not found.');
 
-        parent::init();
+	    parent::init();
     }
 
 	/**
@@ -36,7 +37,10 @@ class UsersController extends RestController
 	public function checkAccess($action, $model = null, $params = [])
 	{
 
-		if (is_null($model))
+		if ($this->modelClass)
+			parent::checkAccess($action, $this->modelClass, $params);
+
+		if (is_null($model) && $action !== 'index')
 			throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to this API has not supported.', null, $this->getAcceptLanguage()), -1);
 
 		switch ($action) {
@@ -44,16 +48,27 @@ class UsersController extends RestController
 			case 'index':
 
 				// Check if the current user has permission to view list of all users
-				if (!($model->getUserId() == $this->getAuthUserId() || Yii::$app->getUser()->can('admin')))
-					throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You are not allowed to list users'), null, $this->getAcceptLanguage());
+				if (!Yii::$app->getUser()->can('admin'))
+					throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You are not allowed to list users', null, $this->getAcceptLanguage()), -1);
+
+				break;
+
+			case 'create':
+
+				$model->scenario = $this->createScenario;
 
 				break;
 
 			case 'view':
+			case 'update':
+			case 'delete':
+
+				if ($action == 'update')
+					$model->scenario = $this->updateScenario;
 
 				// Check if the current user has permission to view yourself
-				if (!($model->getUserId() == $this->getAuthUserId()))
-					throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You are not allowed to view user ID: {user}', ['user' => $model->getUserId()], $this->getAcceptLanguage()));
+				if (!($model->getUserId() == $this->getAuthUserId() || Yii::$app->getUser()->can('admin')))
+					throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You are not allowed to view user ID: {user}', ['user' => $model->getId()], $this->getAcceptLanguage()));
 
 				break;
 
@@ -64,6 +79,19 @@ class UsersController extends RestController
 					throw new ForbiddenHttpException(Yii::t('app/modules/api', 'You are not allowed to run this action: {action}', ['action' => $action], $this->getAcceptLanguage()));
 
 				break;
+		}
+
+		if (Yii::$app->getUser()->can('admin')) {
+			Yii::$app->response->headers->set('X-Action-Params', json_encode([
+				'action' => $action,
+				'model' => $model,
+				'scenario' => $model->scenario,
+				'scenarios' => [
+					'create' => $this->createScenario,
+					'update' => $this->updateScenario,
+				],
+				'params' => $params
+			]));
 		}
 	}
 }

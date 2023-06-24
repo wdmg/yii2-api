@@ -12,6 +12,7 @@ use yii\filters\auth\QueryParamAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\AccessControl;
 use yii\filters\RateLimiter;
+use yii\helpers\Console;
 use yii\rest\ActiveController;
 use Yii;
 use wdmg\api\models\API;
@@ -38,7 +39,8 @@ class RestController extends ActiveController
     public function init()
     {
         parent::init();
-        \Yii::$app->user->enableSession = false;
+
+	    \Yii::$app->user->enableSession = false;
 
         // Get request modes
         $this->requestMode = 'public';
@@ -87,18 +89,18 @@ class RestController extends ActiveController
      */
     protected function verbs()
     {
-        $verbs = [
+        $verbs = array_merge(parent::verbs(), [
             'index' => ['GET', 'HEAD'],
             'view' => ['GET', 'HEAD'],
             'create' => ['POST'],
-            'update' => ['PUT', 'PATCH'],
+            'update' => ['POST', 'PUT', 'PATCH'],
             'delete' => ['DELETE'],
-        ];
+        ]);
 
         if (!$this->requestMode == 'private') {
-            unset($verbs['update']);
-            unset($verbs['create']);
-            unset($verbs['delete']);
+	        $verbs['update'] = [];
+	        $verbs['create'] = [];
+	        $verbs['delete'] = [];
         }
 
         return $verbs;
@@ -229,10 +231,7 @@ class RestController extends ActiveController
 	    if (!empty($locales))
 		    $behaviors['contentNegotiator']['languages'] = array_keys($locales);
 
-		//var_export($behaviors) && die();
-
 	    Yii::$app->response->headers->set('X-Access-Mode', $this->requestMode);
-
         return $behaviors;
     }
 
@@ -241,10 +240,15 @@ class RestController extends ActiveController
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        if (is_null($model))
-            $model = $this->modelClass;
 
-        parent::checkAccess($action, $this->modelClass, $params);
+	    if (is_null($model) && $this->modelClass)
+		    $model = $this->modelClass;
+
+	    if (empty($params))
+	        $params = Yii::$app->request->bodyParams;
+
+	    if ($this->modelClass)
+		    parent::checkAccess($action, $this->modelClass, $params);
 
         if ($this->requestMode == 'public' && isset($this->allowedModes['public'])) {
             if ($this->allowedModes['public'] === false)
@@ -273,7 +277,21 @@ class RestController extends ActiveController
         } else {
             throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Access to API has blocked.', null, $this->acceptLanguage), -2);
         }
-    }
+
+	    if ($this->requestMode == 'private') {
+
+		    if (defined("$model::SCENARIO_CREATE_REST"))
+			    $this->createScenario = $model::SCENARIO_CREATE_REST;
+		    else if (defined("$model::SCENARIO_DEFAULT"))
+			    $this->createScenario = $model::SCENARIO_DEFAULT;
+
+		    if (defined("$model::SCENARIO_UPDATE_REST"))
+			    $this->updateScenario = $model::SCENARIO_UPDATE_REST;
+		    else if (defined("$model::SCENARIO_DEFAULT"))
+			    $this->updateScenario = $model::SCENARIO_DEFAULT;
+
+	    }
+	}
 
     /**
      * BaseAuth
@@ -284,6 +302,15 @@ class RestController extends ActiveController
 	    $user = Users::findOne(['username' => $username]);
 
 		if (is_null($user)) {
+
+			// Log activity
+			$this->module->logActivity(
+				'API: User not found (Basic Auth). User `'.$username.'`',
+				$this->uniqueId . ":" . $this->action->id,
+				'error',
+				1
+			);
+
 			throw new ForbiddenHttpException(Yii::t('app/modules/api', 'User not found.'), -2);
 		} else {
 			if ($user->validatePassword($password)) {
@@ -292,18 +319,54 @@ class RestController extends ActiveController
 				if ($client = Api::findIdentity($user->id)) {
 					$this->accessToken = $client->access_token;
 					$this->accessExpired = $client->expired_at;
+
+					// Log activity
+					$this->module->logActivity(
+						'API: Successful login (Basic Auth). User `'.$username.'`,  ID: ' . $user->id,
+						$this->uniqueId . ":" . $this->action->id,
+						'info',
+						1
+					);
+
 					return $client;
 				} else {
 					$client = new API();
 					if ($client->addNewIdentity($user->id)) {
 						$this->accessToken = $client->access_token;
 						$this->accessExpired = $client->expired_at;
+
+						// Log activity
+						$this->module->logActivity(
+							'API: Add new identity and successful login (Basic Auth). User `'.$username.'`,  ID: ' . $user->id,
+							$this->uniqueId . ":" . $this->action->id,
+							'success',
+							1
+						);
+
 						return $client;
 					}
 				}
 
+
+				// Log activity
+				$this->module->logActivity(
+					'API: Other auth error (Basic Auth). User `'.$username.'`',
+					$this->uniqueId . ":" . $this->action->id,
+					'error',
+					1
+				);
+
 				return null;
 			} else {
+
+				// Log activity
+				$this->module->logActivity(
+					'API: Password is wrong (Basic Auth). User `'.$username.'`',
+					$this->uniqueId . ":" . $this->action->id,
+					'error',
+					1
+				);
+
 				throw new ForbiddenHttpException(Yii::t('app/modules/api', 'Password is wrong.'), -2);
 			}
 		}
@@ -311,6 +374,17 @@ class RestController extends ActiveController
         return null;
     }
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function actions()
+	{
+		return parent::actions();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function afterAction($action, $result)
 	{
 		$result = parent::afterAction($action, $result);
@@ -331,6 +405,7 @@ class RestController extends ActiveController
 		Yii::$app->response->headers->remove('X-Pagination-Page-Count');
 		Yii::$app->response->headers->remove('X-Pagination-Current-Page');
 		Yii::$app->response->headers->remove('X-Pagination-Per-Page');
+
 		return $this->serializeData($result);
 	}
 
@@ -339,7 +414,7 @@ class RestController extends ActiveController
 	}
 
 	public function getAuthUserId() {
-		return Yii::$app->getUser()->getIdentity(false)->getUserId();
+		return Yii::$app->getUser()->getIdentity(false)->getId();
 	}
 }
 

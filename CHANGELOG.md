@@ -1,7 +1,9 @@
 Changelog
 =========
 
-## 2.0.*
+## 2.0.1 (2023-06-24)
+ * Add log activity
+ * Fix users API save/update
  * Fixed permissions for Users API
 
 ## 2.0.0 (2023-06-18)

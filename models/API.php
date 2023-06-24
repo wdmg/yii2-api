@@ -146,7 +146,8 @@ class API extends ActiveRecord implements IdentityInterface, RateLimitInterface
      */
     public function getId()
     {
-		return $this->getPrimaryKey();
+		//return $this->getPrimaryKey();
+	    return $this->user_id;
     }
 
     /**
