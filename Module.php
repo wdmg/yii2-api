@@ -14,6 +14,7 @@ namespace wdmg\api;
  *
  */
 
+use wdmg\helpers\ArrayHelper;
 use Yii;
 use wdmg\base\BaseModule;
 
@@ -165,7 +166,7 @@ class Module extends BaseModule
     /**
      * {@inheritdoc}
      */
-    public function dashboardNavItems($options = false)
+    public function dashboardNavItems($options = null)
     {
         $items = [
             'label' => $this->name,
@@ -185,7 +186,20 @@ class Module extends BaseModule
                 ],
             ]
         ];
-        return $items;
+
+	    if (!is_null($options)) {
+
+		    if (isset($options['count'])) {
+			    $items['label'] .= '<span class="badge badge-default float-right">' . $options['count'] . '</span>';
+			    unset($options['count']);
+		    }
+
+		    if (is_array($options))
+			    $items = ArrayHelper::merge($items, $options);
+
+	    }
+
+	    return $items;
     }
 
     /**

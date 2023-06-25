@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 2.0.*
+ * Fix nav menu for dashboard
+
 ## 2.0.1 (2023-06-24)
  * Add log activity
  * Fix users API save/update
